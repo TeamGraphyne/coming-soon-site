@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graphics Engine - Coming Soon</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #0e100f;
+        color: #fff;
+        overflow-x: hidden;
+      }
+
+      /* Shape Overlays Loader */
+      .shape-overlays {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        pointer-events: none;
+      }
+
+      .container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 2rem;
+        opacity: 0;
+      }
+
+      .bg-gradient {
+        position: fixed;
+        width: 250vw;
+        height: 250vw;
+        top: -50%;
+        left: -50%;
+        background: radial-gradient(
+            circle at 50% 50%,
+            rgba(139, 92, 246, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(236, 72, 153, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 20% 80%,
+            rgba(59, 130, 246, 0.15) 0%,
+            transparent 50%
+          );
+        z-index: 0;
+      }
+
+      .shapes {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .shape {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.3;
+      }
+
+      .shape1 {
+        width: 400px;
+        height: 400px;
+        background: linear-gradient(45deg, #8b5cf6, #ec4899);
+        top: 10%;
+        left: 10%;
+      }
+
+      .shape2 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        bottom: 15%;
+        right: 15%;
+      }
+
+      .shape3 {
+        width: 250px;
+        height: 250px;
+        background: linear-gradient(225deg, #ec4899, #f97316);
+        top: 50%;
+        right: 20%;
+      }
+
+      .content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        max-width: 1200px;
+      }
+
+      .logo {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        opacity: 0;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #8b5cf6, #ec4899, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 10vw, 7rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+        letter-spacing: -0.02em;
+      }
+
+      .title-line {
+        display: block;
+        overflow: hidden;
+      }
+
+      .title-word {
+        display: inline-block;
+        opacity: 0;
+        margin-top: -90px;
+      }
+
+      .subtitle {
+        font-size: clamp(1.2rem, 3vw, 2rem);
+        margin-bottom: 3rem;
+        opacity: 0;
+        color: #a1a1aa;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+      }
+
+      .cta {
+        margin-top: 3rem;
+        opacity: 0;
+      }
+
+      .email-form {
+        display: flex;
+        gap: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      input[type="email"] {
+        flex: 1;
+        min-width: 250px;
+        padding: 1rem 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        color: #fff;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+
+      input[type="email"]:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #8b5cf6;
+      }
+
+      input[type="email"]::placeholder {
+        color: #71717a;
+      }
+
+      button {
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border: none;
+        border-radius: 50px;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+      }
+
+      .features {
+        position: absolute;
+        bottom: 3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 3rem;
+        opacity: 0;
+      }
+
+      .feature {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #71717a;
+      }
+
+      .feature strong {
+        display: block;
+        color: #fff;
+        margin-bottom: 0.3rem;
+        font-size: 1.1rem;
+      }
+
+      @media (max-width: 768px) {
+        .features {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .graphic-item {
+          width: 100px;
+          height: 100px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Shape Overlays Loader -->
+    <svg
+      class="shape-overlays"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <!-- orange crush -->
+        <linearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ff8709" />
+          <stop offset="100%" stop-color="#f7bdf8" />
+        </linearGradient>
+        <!-- summer fair -->
+        <linearGradient id="gradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#00bae2" />
+          <stop offset="100%" stop-color="#fec5fb" />
+        </linearGradient>
+        <!-- emerald city -->
+        <linearGradient id="gradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0ae448" />
+          <stop offset="100%" stop-color="#0085d0" />
+        </linearGradient>
+      </defs>
+      <path class="shape-overlays__path" fill="url(#gradient1)"></path>
+      <path class="shape-overlays__path" fill="url(#gradient2)"></path>
+      <path class="shape-overlays__path" fill="url(#gradient3)"></path>
+    </svg>
+
+    <div class="bg-gradient"></div>
+
+    <div class="shapes">
+      <div class="shape shape1"></div>
+      <div class="shape shape2"></div>
+      <div class="shape shape3"></div>
+    </div>
+
+    <div class="container">
+      <div class="content">
+        <div class="logo">Graphyne</div>
+
+        <h1><span class="title-word">Graphyne.live</span></h1>
+
+        <p class="subtitle">
+          The next generation HTML graphics creator and playback engine
+        </p>
+
+        <div class="cta">
+          <form class="email-form" onsubmit="return false;">
+            <input type="email" placeholder="Enter your email" required />
+            <button type="submit">Get Early Access</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.registerPlugin(TextPlugin);
+
+      // ===== SHAPE OVERLAYS LOADER =====
+      let overlay = document.querySelector(".shape-overlays");
+      let paths = document.querySelectorAll(".shape-overlays__path");
+      let numPoints = 10;
+      let numPaths = paths.length;
+      let delayPointsMax = 0.3;
+      let delayPerPath = 0.25;
+      let duration = 0.9;
+      let isOpened = false;
+      let pointsDelay = [];
+      let allPoints = [];
+      let loaderTl = gsap.timeline({
+        onUpdate: renderLoader,
+        defaults: {
+          ease: "power2.inOut",
+          duration: 0.9,
+        },
+      });
+
+      for (let i = 0; i < numPaths; i++) {
+        let points = [];
+        allPoints.push(points);
+        for (let j = 0; j < numPoints; j++) {
+          points.push(100);
+        }
+      }
+
+      function toggleLoader() {
+        loaderTl.progress(0).clear();
+
+        for (let i = 0; i < numPoints; i++) {
+          pointsDelay[i] = Math.random() * delayPointsMax;
+        }
+
+        for (let i = 0; i < numPaths; i++) {
+          let points = allPoints[i];
+          let pathDelay = delayPerPath * (isOpened ? i : numPaths - i - 1);
+
+          for (let j = 0; j < numPoints; j++) {
+            let delay = pointsDelay[j];
+            loaderTl.to(
+              points,
+              {
+                [j]: 0,
+              },
+              delay + pathDelay
+            );
+          }
+        }
+      }
+
+      function renderLoader() {
+        for (let i = 0; i < numPaths; i++) {
+          let path = paths[i];
+          let points = allPoints[i];
+
+          let d = "";
+          d += isOpened ? `M 0 0 V ${points[0]} C` : `M 0 ${points[0]} C`;
+
+          for (let j = 0; j < numPoints - 1; j++) {
+            let p = ((j + 1) / (numPoints - 1)) * 100;
+            let cp = p - ((1 / (numPoints - 1)) * 100) / 2;
+            d += ` ${cp} ${points[j]} ${cp} ${points[j + 1]} ${p} ${
+              points[j + 1]
+            }`;
+          }
+
+          d += isOpened ? ` V 100 H 0` : ` V 0 H 0`;
+          path.setAttribute("d", d);
+        }
+      }
+
+      // Start the loader animation
+      isOpened = false;
+      toggleLoader();
+
+      // Wait for loader to finish, then reveal content
+      loaderTl.eventCallback("onComplete", () => {
+        setTimeout(() => {
+          // Hide the loader overlay
+          gsap.to(".shape-overlays", {
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => {
+              overlay.style.display = "none";
+            },
+          });
+
+          // Fade in main container after loader finishes
+          gsap.to(".container", {
+            opacity: 1,
+            duration: 0.5,
+            onComplete: startMainAnimation,
+          });
+        }, 300);
+      });
+
+      // ===== MAIN PAGE ANIMATIONS =====
+      function startMainAnimation() {
+        // Animate background gradient
+        gsap.to(".bg-gradient", {
+          rotation: 360,
+          duration: 60,
+          repeat: -1,
+          ease: "none",
+        });
+
+        // Animate shapes
+        gsap.to(".shape1", {
+          x: 100,
+          y: 50,
+          scale: 1.2,
+          duration: 8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+
+        gsap.to(".shape2", {
+          x: -80,
+          y: -60,
+          scale: 0.8,
+          duration: 10,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+
+        gsap.to(".shape3", {
+          x: 60,
+          y: 80,
+          scale: 1.1,
+          duration: 7,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+
+        // Main animation timeline
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // Logo fade in
+        tl.to(".logo", {
+          opacity: 1,
+          duration: 1,
+          y: 0,
+        },"0.2");
+
+        // Title words animation
+        tl.to(
+          ".title-word",
+          {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power4.out",
+          },
+          "0"
+        );
+
+        tl.to(
+          ".title-word",
+          {
+            text: "COMING SOON",
+            duration: 1.6,
+            ease: "power2.out",
+            scrambleText: { chars: "0123456789!@#$%^&*()<>?", speed: 1 },
+          },
+          "+=0.5"
+        );
+
+        // Subtitle
+        tl.to(
+          ".subtitle",
+          {
+            opacity: 1,
+            duration: 1.5,
+            y: 0,
+          },
+          "-=1.5"
+        );
+
+        // CTA
+        tl.to(
+          ".cta",
+          {
+            opacity: 1,
+            duration: 0.8,
+            y: 0,
+          },
+          "-=1.4"
+        );
+
+        // Features
+        tl.to(
+          ".features",
+          {
+            opacity: 1,
+            duration: 0.8,
+            y: 0,
+          },
+          "-=0.4"
+        );
+      }
+
+      // Form submission animation
+      document.querySelector("button").addEventListener("click", (e) => {
+        const button = e.target;
+        const originalText = button.textContent;
+
+        gsap.to(button, {
+          scale: 0.95,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 1,
+          onComplete: () => {
+            button.textContent = "This Button does nothing!";
+            setTimeout(() => {
+              button.textContent = originalText;
+            }, 2000);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
