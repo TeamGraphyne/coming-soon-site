@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graphyne - Viva Presentation</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      background-color: #1a0b2e;
+      color: white;
+    }
+
+    #broadcast-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* 1. The LIVE Indicator */
+    .live-bug {
+      position: absolute;
+      top: 50px;
+      right: 50px;
+      background: rgba(220, 20, 60, 0.9);
+      /* Crimson Red */
+      color: white;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 20px rgba(220, 20, 60, 0.4);
+      text-transform: uppercase;
+    }
+
+    .rec-dot {
+      width: 12px;
+      height: 12px;
+      background-color: white;
+      border-radius: 50%;
+      animation: blink 1.5s infinite ease-in-out;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    /* 2. Corner Guide Lines (Crop Marks) */
+    .corner-guide {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-color: rgba(255, 255, 255, 0.3);
+      /* Subtle white */
+      border-style: solid;
+      border-width: 0;
+    }
+
+    .tl {
+      top: 30px;
+      left: 30px;
+      border-top-width: 3px;
+      border-left-width: 3px;
+    }
+
+    .tr {
+      top: 30px;
+      right: 30px;
+      border-top-width: 3px;
+      border-right-width: 3px;
+    }
+
+    .bl {
+      bottom: 30px;
+      left: 30px;
+      border-bottom-width: 3px;
+      border-left-width: 3px;
+    }
+
+    .br {
+      bottom: 30px;
+      right: 30px;
+      border-bottom-width: 3px;
+      border-right-width: 3px;
+    }
+
+    /* --- EXISTING STYLES --- */
+    #background-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .blur-circle {
+      position: absolute;
+      background: radial-gradient(circle,
+          rgba(138, 43, 226, 0.4) 0%,
+          rgba(75, 0, 130, 0) 70%);
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.6;
+    }
+
+    #presentation-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      padding: 4rem;
+      text-align: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 6rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    h2 {
+      font-size: 3.5rem;
+      color: #d4b3ff;
+      margin-bottom: 2rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      line-height: 1.6;
+      color: #e0d0ff;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1.2fr auto 1fr;
+      width: 90%;
+      max-width: 1400px;
+      margin-top: 3rem;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .price-card {
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .divider {
+      width: 2px;
+      height: 250px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .graphyne-card {
+      padding: 3rem 2rem;
+      border-radius: 24px;
+      border: 1px solid rgba(77, 255, 136, 0.3);
+      background: rgba(77, 255, 136, 0.05);
+      animation: pulse-green 4s infinite ease-in-out;
+      transform: scale(1.05);
+      z-index: 10;
+    }
+
+    @keyframes pulse-green {
+      0% {
+        background-color: rgba(77, 255, 136, 0.05);
+        box-shadow: 0 0 0 0 rgba(77, 255, 136, 0);
+      }
+
+      50% {
+        background-color: rgba(77, 255, 136, 0.15);
+        box-shadow: 0 0 40px 0 rgba(77, 255, 136, 0.1);
+      }
+
+      100% {
+        background-color: rgba(77, 255, 136, 0.05);
+        box-shadow: 0 0 0 0 rgba(77, 255, 136, 0);
+      }
+    }
+
+    video {
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      background: black;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Visual Improvements for Slide 5 (Meet Graphyne) */
+    .browser-mockup {
+      width: 700px;
+      background: rgba(20, 20, 25, 0.95);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin: 2rem auto;
+      position: relative;
+    }
+
+    .browser-header {
+      height: 48px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+      gap: 8px;
+    }
+
+    .window-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-red {
+      background-color: #ff5f56;
+    }
+
+    .dot-yellow {
+      background-color: #ffbd2e;
+    }
+
+    .dot-green {
+      background-color: #27c93f;
+    }
+
+    .browser-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+    }
+
+    .feature-cards-container {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.2rem 2rem;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    /* Gradient Text */
+    .gradient-text {
+      background: linear-gradient(90deg, #d4b3ff, #ffe394, #d4b3ff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 5s linear infinite;
+    }
+
+    @keyframes shine {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    /* Tech Cards for Slide 6 */
+    .tech-cards-container {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .tech-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 3rem 1.5rem;
+      flex: 1;
+      text-align: center;
+      transition: transform 0.4s ease, border-color 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-15px);
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .tech-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .tech-title {
+      font-size: 1.8rem;
+      color: white;
+      margin-bottom: 1rem;
+      display: block;
+      font-weight: bold;
+    }
+
+    .tech-desc {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+    }
+
+    .highlight-green {
+      color: #4dff88;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="broadcast-overlay">
+    <div class="live-bug">
+      <div class="rec-dot"></div>
+      <span>LIVE</span>
+    </div>
+
+    <div class="corner-guide tl"></div>
+    <div class="corner-guide tr"></div>
+    <div class="corner-guide bl"></div>
+    <div class="corner-guide br"></div>
+  </div>
+
+  <div id="background-animation"></div>
+
+  <div id="presentation-container">
+    <div class="slide active" id="slide-1">
+      <p>Welcome to</p>
+      <h1>Graphyne</h1>
+      <h2>Graphics Creator & Playout Engine</h2>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <h2>The Current Landscape</h2>
+      <video muted playsinline loop style="width: 900px; object-fit: contain;">
+        <source src="Demo2.mp4" type="video/mp4" />
+      </video>
+      <p style="margin-top: 2rem">
+        You either need a $15k budget, or a CS Degree
+      </p>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <h1>The Innovation Gap</h1>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h2 style="color: #ff4d4d; font-size: 2.5rem; margin-bottom: 0.5rem">
+            Enterprise
+          </h2>
+          <p style="font-size: 1.2rem; color: #aaa">Ross XPression, VizRT</p>
+          <p style="font-size: 3rem; font-weight: bold; margin-top: 20px">
+            $11,000+
+          </p>
+          <p style="font-size: 1.5rem; color: #ff4d4d; margin-top: 10px">
+            (Hardware Dongle Required)
+          </p>
+        </div>
+        <div class="divider"></div>
+        <div class="price-card graphyne-card">
+          <h2 style="color: #4dff88; font-size: 3rem; margin-bottom: 0.5rem">
+            Graphyne
+          </h2>
+          <p style="font-size: 1.2rem; color: #ccffda">Browser-Based SaaS</p>
+          <p style="
+                font-size: 4rem;
+                font-weight: bold;
+                margin-top: 20px;
+                color: white;
+              ">
+            $50<span style="font-size: 1.5rem; color: #aaa">/mo</span>
+          </p>
+          <p style="font-size: 1.8rem; color: #4dff88; margin-top: 10px">
+            (Runs on a Potato)
+          </p>
+        </div>
+        <div class="divider"></div>
+        <div class="price-card">
+          <h2 style="color: #ff4d4d; font-size: 2.5rem; margin-bottom: 0.5rem">
+            FOSS
+          </h2>
+          <p style="font-size: 1.2rem; color: #aaa">CasparCG, NodeCG</p>
+          <p style="font-size: 3rem; font-weight: bold; margin-top: 20px">
+            $0
+          </p>
+          <p style="font-size: 1.5rem; color: #ff4d4d; margin-top: 10px">
+            (Configuration Hell)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+      <h1>Meet Graphyne</h1>
+      <h2 class="gradient-text" style="margin-bottom: 0;">The "Canva" for Live Graphics</h2>
+
+      <div class="browser-mockup">
+        <div class="browser-header">
+          <div class="window-dot dot-red"></div>
+          <div class="window-dot dot-yellow"></div>
+          <div class="window-dot dot-green"></div>
+        </div>
+        <div class="browser-content">
+          <video muted playsinline loop style="width: 100%; height: 100%; object-fit: contain;">
+            <source src="GraphDemo.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="feature-cards-container">
+        <div class="feature-card">
+          <span style="font-size: 1.5rem;">🎨</span>
+          <div>
+            <strong style="display: block; font-size: 1.1rem;">WYSIWYG Editor</strong>
+            <span style="font-size: 0.9rem; opacity: 0.7;">Drag & Drop Design</span>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <span style="font-size: 1.5rem;">⏱️</span>
+          <div>
+            <strong style="display: block; font-size: 1.1rem;">Real-Time Playout</strong>
+            <span style="font-size: 0.9rem; opacity: 0.7;">Instant Rendering</span>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <span style="font-size: 1.5rem;">🚀</span>
+          <div>
+            <strong style="display: block; font-size: 1.1rem;">Data Integration</strong>
+            <span style="font-size: 0.9rem; opacity: 0.7;">Instant Data Updates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+      <h1 style="font-size: 3rem; margin-bottom: 0;">Built on Web Technologies</h1>
+
+      <div class="tech-cards-container">
+        <div class="tech-card">
+          <span class="tech-icon">🛠️</span>
+          <span class="tech-title">Highly Customizable</span>
+          <p class="tech-desc">Modify any element using standard CSS and HTML. No proprietary layout engines.</p>
+        </div>
+
+        <div class="tech-card">
+          <span class="tech-icon">🔌</span>
+          <span class="tech-title">Extensible</span>
+          <p class="tech-desc">Access the entire NPM ecosystem to integrate with ANY data source or API.</p>
+        </div>
+
+        <div class="tech-card">
+          <span class="tech-icon">🌐</span>
+          <span class="tech-title">Cross-Platform</span>
+          <p class="tech-desc">Runs anywhere a browser can run: Windows, macOS, Linux, and even mobile.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 3rem; color: #4dff88; font-weight: normal; font-size: 1.8rem;">
+        No more fiddling with proprietary file formats!
+      </h3>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-6">
+    <h1>The Business Case</h1>
+    <h2>SaaS: Software as a Service</h2>
+    <div style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+            text-align: left;
+          ">
+      <div>
+        <h3 style="color: #d4b3ff; font-size: 2rem">1. Freemium</h3>
+        <p style="font-size: 1.5rem; opacity: 0.7">
+          Watermarked output. Hook the users early.
+        </p>
+      </div>
+      <div>
+        <h3 style="color: #d4b3ff; font-size: 2rem">2. Paid</h3>
+        <p style="font-size: 1.5rem; opacity: 0.7">
+          One Time Purchase. No Watermark.
+        </p>
+      </div>
+      <div>
+        <h3 style="color: #d4b3ff; font-size: 2rem">3. Custom Pricing</h3>
+        <p style="font-size: 1.5rem; opacity: 0.7">
+          Custom Pricing for custom features
+        </p>
+      </div>
+      <div>
+        <h3 style="color: #d4b3ff; font-size: 2rem">Alt: Open Source</h3>
+        <p style="font-size: 1.5rem; opacity: 0.7">
+          Community Based Approach
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-7">
+    <p style="font-size: 1.5rem; opacity: 0.7">Built for Broadcasters, by Broadcasters.</p>
+    <br>
+    <h1 style="font-size: 3rem; margin-bottom: 0;">Trust us with your Graphics</h1>
+  </div>
+
+
+  <script>
+    // Background Animation Setup
+    const bgContainer = document.getElementById("background-animation");
+    const colors = [
+      "rgba(138, 43, 226, 0.4)", // Blue Violet
+      "rgba(148, 0, 211, 0.4)", // Dark Violet
+      "rgba(75, 0, 130, 0.4)", // Indigo
+      "rgba(123, 104, 238, 0.4)", // Medium Slate Blue
+      "rgba(218, 112, 214, 0.4)", // Orchid
+    ];
+
+    // Create random circles
+    for (let i = 0; i < 15; i++) {
+      const circle = document.createElement("div");
+      circle.classList.add("blur-circle");
+      const size = Math.random() * 300 + 100; // 100px to 400px
+      circle.style.width = `${size}px`;
+      circle.style.height = `${size}px`;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      circle.style.background = `radial-gradient(circle, ${color} 0%, rgba(75, 0, 130, 0) 70%)`;
+      gsap.set(circle, {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        scale: Math.random() * 0.5 + 0.5,
+      });
+      bgContainer.appendChild(circle);
+      gsap.to(circle, {
+        x: `random(0, ${window.innerWidth})`,
+        y: `random(0, ${window.innerHeight})`,
+        duration: `random(10, 20)`,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+        scale: `random(0.5, 1.2)`,
+      });
+    }
+
+    // Configuration
+    const slides = document.querySelectorAll(".slide");
+    let currentSlideIndex = 0;
+    let isAnimating = false;
+
+    // Initialize
+    gsap.set(slides, { autoAlpha: 0 });
+    gsap.set(slides[0], { autoAlpha: 1 });
+
+    // Video Helper Function
+    function manageVideo(slideElement, action) {
+      const video = slideElement.querySelector("video");
+      if (video) {
+        if (action === "play") {
+          video.currentTime = 0;
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.log("Autoplay prevented:", error);
+            });
+          }
+        } else if (action === "pause") {
+          video.pause();
+        }
+      }
+    }
+
+    // Function to change slides
+    function goToSlide(newIndex) {
+      if (
+        isAnimating ||
+        newIndex === currentSlideIndex ||
+        newIndex < 0 ||
+        newIndex >= slides.length
+      )
+        return;
+
+      isAnimating = true;
+
+      const currentSlide = slides[currentSlideIndex];
+      const nextSlide = slides[newIndex];
+
+      // Manage Videos
+      manageVideo(currentSlide, "pause");
+      manageVideo(nextSlide, "play");
+
+      const currentElements = currentSlide.querySelectorAll(
+        "h1, h2, p, .price-card, .divider, .graphyne-card, video, span, .browser-mockup, .feature-card, h3, ul, .tech-card"
+      );
+      const nextElements = nextSlide.querySelectorAll(
+        "h1, h2, p, .price-card, .divider, .graphyne-card, video, span, .browser-mockup, .feature-card, h3, ul, .tech-card"
+      );
+
+      const direction = newIndex > currentSlideIndex ? 1 : -1;
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          currentSlideIndex = newIndex;
+          isAnimating = false;
+          gsap.set(currentSlide, { autoAlpha: 0 });
+        },
+      });
+
+      // OUT Animation
+      tl.to(
+        currentSlide,
+        {
+          duration: 1.2,
+          xPercent: -50 * direction,
+          scale: 0.9,
+          autoAlpha: 0,
+          ease: "power4.inOut",
+        },
+        "start"
+      );
+
+      tl.to(
+        currentElements,
+        {
+          duration: 0.5,
+          xPercent: -20 * direction,
+          autoAlpha: 0,
+          stagger: 0.05,
+          ease: "power2.in",
+        },
+        "start"
+      );
+
+      // PREP Animation
+      tl.set(
+        nextSlide,
+        {
+          xPercent: 50 * direction,
+          scale: 1.1,
+          autoAlpha: 0,
+          zIndex: 10,
+        },
+        "start"
+      );
+
+      tl.set(
+        nextElements,
+        {
+          xPercent: 20 * direction,
+          autoAlpha: 0,
+        },
+        "start"
+      );
+
+      // IN Animation
+      tl.to(
+        nextSlide,
+        {
+          duration: 1.2,
+          xPercent: 0,
+          scale: 1,
+          autoAlpha: 1,
+          ease: "power4.inOut",
+        },
+        "start+=0.1"
+      );
+
+      tl.to(
+        nextElements,
+        {
+          duration: 1,
+          xPercent: 0,
+          autoAlpha: 1,
+          stagger: 0.1,
+          ease: "power3.out",
+        },
+        "start+=0.5"
+      );
+    }
+
+    window.addEventListener("keydown", (event) => {
+      const key = event.key;
+
+      if (key === "ArrowRight" || key === " " || key === "PageDown") {
+        goToSlide(currentSlideIndex + 1);
+      } else if (key === "ArrowLeft" || key === "PageUp") {
+        goToSlide(currentSlideIndex - 1);
+      } else if (key >= "1" && key <= slides.length.toString()) {
+        const targetIndex = parseInt(key) - 1;
+        goToSlide(targetIndex);
+      }
+    });
+  </script>
+</body>
+
+</html>
