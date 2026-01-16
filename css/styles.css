@@ -2706,3 +2706,151 @@ body.light-mode .chat-message.bot {
     min-height: 240px;
   }
 }
+@media (max-width: 900px) {
+  /* --- NAVIGATION --- */
+  .nav-links {
+    display: none !important;
+  }
+  
+  nav {
+    padding: 1rem !important;
+  }
+
+  /* --- HERO SECTION --- */
+  .hero {
+    height: auto;
+    min-height: 100vh;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    padding: 0 1rem;
+  }
+
+  .hero-visual {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    transform: none;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .broadcast-card {
+    transform: scale(0.8);
+    transform-origin: center;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    padding: 0 2rem;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* --- PROBLEM SECTION (Vertical Stack) --- */
+  .problem {
+    height: auto !important;
+    overflow: visible !important; 
+    background: linear-gradient(180deg, #0a0a14 5%, #1b0430 75%, #0a0a14 95%);
+  }
+
+  .problem-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100% !important;
+    transform: none !important; /* Override GSAP */
+    padding: 0 1rem !important;
+    gap: 2rem !important;
+    margin: 0 auto !important;
+  }
+
+  .problem-card {
+    width: 100% !important;
+    opacity: 1 !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  .final-statement {
+    width: 100%;
+    min-width: unset;
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  .final-statement strong {
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+    display: block;
+  }
+
+  /* --- SOLUTION SECTION --- */
+  .solution-content {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem !important; /* Ensure spacing between stacked cards */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  /* Reset stickyness if needed or let them stack naturally */
+  .solution-content {
+      position: relative;
+      top: auto;
+  }
+
+  .solution-text, .solution-demo {
+     width: 100% !important;
+     padding: 0 !important;
+     text-align: center;
+  }
+
+  .solution-features li {
+    justify-content: flex-start;
+    text-align: left;
+    margin-left: 0;
+    transform: none !important; /* stop animation offset */
+  }
+
+  .solution-features li::before {
+    margin-right: 10px;
+  }
+
+  /* --- PRICING & TEAM --- */
+  .pricing-grid, 
+  .team-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pricing-card, 
+  .team-card {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* --- FOOTER --- */
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
