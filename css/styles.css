@@ -1539,6 +1539,11 @@ body.light-mode .chat-message.bot {
 }
 
 @media (max-width: 768px) {
+  
+  .hero-content{
+    margin: 1rem;
+  }
+
   .solution-content {
     grid-template-columns: 1fr;
   }
