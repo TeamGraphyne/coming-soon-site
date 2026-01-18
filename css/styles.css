@@ -219,6 +219,47 @@ nav.scrolled {
   box-shadow: 0 15px 40px rgba(255, 145, 0, 0.5);
 }
 
+.email-input {
+  width: 300px;
+  padding: 1.3rem 1.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  text-align: center;
+  transition: all 0.3s;
+  margin: 0 1rem;
+}
+
+.email-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--amethyst); /* Using your purple variable */
+  box-shadow: 0 0 15px rgba(157, 78, 221, 0.2);
+}
+
+.email-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.submit-btn {
+  border: none;
+}
+
+/* Optional: Loading state style */
+.submit-btn.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+@media (max-width: 768px) {
+  .submit-btn {
+    margin: 1rem;
+  }
+}
+
 .btn-secondary {
   background: transparent;
   color: #fff;
@@ -2759,7 +2800,6 @@ body.light-mode .chat-message.bot {
   }
 
   .btn {
-    width: 100%;
     text-align: center;
   }
 

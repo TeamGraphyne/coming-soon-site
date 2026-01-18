@@ -204,9 +204,27 @@
         real-time broadcast graphics.<br />No expensive hardware. No complex
         coding. Just pure creative power in your hands.
       </p>
-      <div class="cta-buttons">
-        <a href="#solution" class="btn btn-secondary">See How It Works</a>
-      </div>
+        <form id="mailing-form" style="margin-top: 2rem; position: relative;">
+  <input 
+    type="email" 
+    name="email" 
+    placeholder="Enter your email..." 
+    required 
+    class="email-input"
+  >
+
+  <input 
+    type="text" 
+    name="honeypot" 
+    style="display:none !important" 
+    tabindex="-1" 
+    autocomplete="off"
+  >
+
+  <button type="submit" class="btn btn-secondary submit-btn">
+    Join Waitlist
+  </button>
+  </form>
     </div>
   </section>
 
@@ -625,6 +643,55 @@
   </footer>
 
   <script>
+  const form = document.getElementById('mailing-form');
+  const feedback = document.getElementById('form-feedback');
+  const submitBtn = form.querySelector('.submit-btn');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    
+    // 1. Show loading state
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = "Joining...";
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true; // Prevent double-clicking
+    
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwV0HowyrsHcV4BI90x7NkE3w196gFcZlBfelOf4ROjzYpXrqk_hsnbERQ68GYse664xA/exec';
+
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+        // 2. Success!
+        form.reset();
+        
+        // Change button text to indicate success
+        submitBtn.textContent = "Success!";
+        
+
+        const originalColor = submitBtn.style.background;
+        submitBtn.style.borderColor = "#84cf8f"; // Success Green
+        submitBtn.classList.remove('loading');
+
+        // 3. Reset button after 3 seconds
+        setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = originalColor;
+            submitBtn.disabled = false;
+        }, 3000);
+      })
+      .catch(error => {
+        console.error('Error!', error.message);
+        submitBtn.textContent = "Error! Try again.";
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+
+                setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = originalColor;
+            submitBtn.disabled = false;
+        }, 3000);
+      });
+  });
+
     gsap.registerPlugin(ScrollTrigger);
 
     window.addEventListener("scroll", () => {
@@ -1186,9 +1253,6 @@
           "<"
         );
     }
-
-    // Ensure this is called in the DOMContentLoaded logic along with others
-    // startPlayoutAnimation();
   </script>
 </body>
 
