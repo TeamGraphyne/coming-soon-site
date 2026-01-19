@@ -56,6 +56,10 @@ nav.scrolled {
   background-clip: text;
 }
 
+.logo a {
+  text-decoration: none;
+}
+
 .nav-links a {
   margin-left: 2rem;
   color: var(--text-primary);
