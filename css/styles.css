@@ -19,12 +19,15 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
   overflow-x: hidden;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: background 0.3s, color 0.3s;
+  transition:
+    background 0.3s,
+    color 0.3s;
 }
 
 /* Navigation */
@@ -472,7 +475,9 @@ body.light-mode .problem-card {
   background: #fff;
   border-radius: 2px;
   top: -5px;
-  box-shadow: 20px 0 0 #fff, -20px 0 0 #fff;
+  box-shadow:
+    20px 0 0 #fff,
+    -20px 0 0 #fff;
   animation: plugConnect 1.5s ease-in-out infinite;
 }
 
@@ -678,7 +683,8 @@ body.light-mode .problem-card {
   background: linear-gradient(135deg, #9d4edd 0%, #c77dff 100%);
   border-radius: 20px;
   position: relative;
-  box-shadow: 0 15px 40px rgba(157, 78, 221, 0.6),
+  box-shadow:
+    0 15px 40px rgba(157, 78, 221, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     inset -3px -3px 12px rgba(0, 0, 0, 0.4);
   animation: robotBob 2s ease-in-out infinite;
@@ -695,7 +701,9 @@ body.light-mode .problem-card {
   background: #fff;
   border-radius: 50%;
   position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .robot-eye::after {
@@ -729,7 +737,8 @@ body.light-mode .problem-card {
   background: linear-gradient(135deg, #5a189a 0%, #9d4edd 100%);
   border-radius: 15px;
   position: relative;
-  box-shadow: 0 12px 35px rgba(157, 78, 221, 0.5),
+  box-shadow:
+    0 12px 35px rgba(157, 78, 221, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     inset -3px -3px 12px rgba(0, 0, 0, 0.3);
   border: 2px solid rgba(255, 255, 255, 0.1);
@@ -792,7 +801,8 @@ body.light-mode .problem-card {
   height: 18px;
   background: linear-gradient(90deg, #7b2cbf, #9d4edd);
   border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(157, 78, 221, 0.4),
+  box-shadow:
+    0 6px 15px rgba(157, 78, 221, 0.4),
     inset -1px -1px 4px rgba(0, 0, 0, 0.2);
   animation: robotArm 2s ease-in-out infinite;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -822,7 +832,8 @@ body.light-mode .problem-card {
   height: 45px;
   background: linear-gradient(180deg, #7b2cbf, #9d4edd);
   border-radius: 8px;
-  box-shadow: 0 6px 15px rgba(157, 78, 221, 0.4),
+  box-shadow:
+    0 6px 15px rgba(157, 78, 221, 0.4),
     inset -1px -1px 4px rgba(0, 0, 0, 0.2);
   animation: robotWalk 1.5s ease-in-out infinite;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -937,7 +948,8 @@ body.light-mode .problem-card {
 /* Data Engine Robot Styles */
 .data-robot .robot-body {
   background: linear-gradient(135deg, #00d4ff, #0099ff);
-  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4),
+  box-shadow:
+    0 10px 30px rgba(0, 212, 255, 0.4),
     inset -2px -2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -996,7 +1008,8 @@ body.light-mode .problem-card {
 /* Playout Engine Robot Styles */
 .play-robot .robot-body {
   background: linear-gradient(135deg, #ff6b9d, #ff1493);
-  box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4),
+  box-shadow:
+    0 10px 30px rgba(255, 107, 157, 0.4),
     inset -2px -2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -1584,8 +1597,7 @@ body.light-mode .chat-message.bot {
 }
 
 @media (max-width: 768px) {
-  
-  .hero-content{
+  .hero-content {
     margin: 1rem;
   }
 
@@ -2200,10 +2212,8 @@ body.light-mode .chat-message.bot {
   background: #0a0a0a; /* Darker black for canvas */
   position: relative;
   overflow: hidden;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.03) 1px,
-      transparent 1px
-    ),
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
@@ -2756,7 +2766,7 @@ body.light-mode .chat-message.bot {
   .nav-links {
     display: none !important;
   }
-  
+
   nav {
     padding: 1rem !important;
   }
@@ -2810,7 +2820,7 @@ body.light-mode .chat-message.bot {
   /* --- PROBLEM SECTION (Vertical Stack) --- */
   .problem {
     height: auto !important;
-    overflow: visible !important; 
+    overflow: visible !important;
     background: linear-gradient(180deg, #0a0a14 5%, #1b0430 75%, #0a0a14 95%);
   }
 
@@ -2855,17 +2865,18 @@ body.light-mode .chat-message.bot {
     flex-direction: column;
     gap: 2rem;
   }
-  
+
   /* Reset stickyness if needed or let them stack naturally */
   .solution-content {
-      position: relative;
-      top: auto;
+    position: relative;
+    top: auto;
   }
 
-  .solution-text, .solution-demo {
-     width: 100% !important;
-     padding: 0 !important;
-     text-align: center;
+  .solution-text,
+  .solution-demo {
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: center;
   }
 
   .solution-features li {
@@ -2880,18 +2891,18 @@ body.light-mode .chat-message.bot {
   }
 
   /* --- PRICING & TEAM --- */
-  .pricing-grid, 
+  .pricing-grid,
   .team-grid {
     flex-direction: column;
     align-items: center;
   }
 
-  .pricing-card, 
+  .pricing-card,
   .team-card {
     width: 100%;
     max-width: 400px;
   }
-  
+
   /* --- FOOTER --- */
   .footer-content {
     grid-template-columns: 1fr;
