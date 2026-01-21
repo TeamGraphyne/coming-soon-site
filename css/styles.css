@@ -1175,6 +1175,8 @@ body.light-mode .pricing {
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
+  width: 50%;
+  margin: 0 auto;
 }
 
 .pricing-card.animate {
@@ -1619,6 +1621,10 @@ body.light-mode .chat-message.bot {
 
   .nav-links {
     display: none;
+  }
+  
+  .pricing-card {
+    width: 90%;
   }
 }
 
