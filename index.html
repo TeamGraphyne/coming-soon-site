@@ -1,141 +1,187 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GraphyneLive</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="icon" href="assets/favi.jpg" type="image/jpg" sizes="32x32" />
 
-    <style>
-      /* --- HORIZONTAL SCROLL (Problem Section) --- */
-      #problem {
-        overflow: hidden;
-        width: 100%;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GraphyneLive</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="assets/favi.jpg" type="image/jpg" sizes="32x32" />
 
-      .problem-grid {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 4rem;
-        width: max-content;
-        padding: 0 10vw;
-        align-items: center;
-      }
+  <style>
+    /* --- HORIZONTAL SCROLL (Problem Section) --- */
+    #problem {
+      overflow: hidden;
+      width: 100%;
+    }
 
-      .problem-card {
-        width: 35vw;
-        min-width: 400px;
-        flex-shrink: 0;
-        opacity: 1 !important;
-        transform: none !important;
-      }
+    .problem-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 4rem;
+      width: max-content;
+      padding: 0 10vw;
+      align-items: center;
+    }
 
-      .final-statement {
-        width: 50vw;
-        min-width: 300px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 5vw;
-      }
+    .problem-card {
+      width: 35vw;
+      min-width: 400px;
+      flex-shrink: 0;
+      opacity: 1 !important;
+      transform: none !important;
+    }
 
-      .final-statement strong {
-        font-size: 3.5rem;
-        color: var(--amethyst);
-        line-height: 1.2;
-        text-align: left;
-      }
+    .final-statement {
+      width: 50vw;
+      min-width: 300px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5vw;
+    }
 
-      /* --- STACKED CARDS (Solution Section) --- */
-      .solution {
-        position: relative;
-        padding-bottom: 10vh;
-      }
+    .final-statement strong {
+      font-size: 3.5rem;
+      color: var(--amethyst);
+      line-height: 1.2;
+      text-align: left;
+    }
 
+    /* --- STACKED CARDS (Solution Section) --- */
+    .solution {
+      position: relative;
+      padding-bottom: 10vh;
+    }
+
+    .solution-content {
+      height: 70vh;
+      max-width: 1200px;
+      margin: 0 auto 5vh auto !important;
+      position: sticky;
+      top: 15vh;
+      background: #131313;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 40px;
+      box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5rem;
+      transform-origin: center top;
+      overflow: hidden;
+    }
+
+    .solution-content>div {
+      flex: 1;
+    }
+
+    .solution-text {
+      padding-right: 3rem;
+    }
+
+    /* --- FINAL CTA VIEWFINDER OVERRIDES --- */
+    .final-cta {
+      position: relative;
+      /* Needed for absolute positioning of viewfinder */
+      overflow: hidden;
+      /* Keep corners inside */
+    }
+
+    /* Ensure CTA text is clickable and visible above the overlay */
+    .final-cta h2,
+    .final-cta h3,
+    .final-cta p,
+    .final-cta .cta-buttons {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Specific styles for the CTA viewfinder instance */
+    .final-cta .viewfinder-ui {
+      height: 100%;
+      /* Fit to the section, don't use vh */
+      opacity: 0.5;
+      /* Slightly subtler than hero */
+    }
+
+    @media (max-width: 900px) {
       .solution-content {
-        height: 70vh;
-        max-width: 1200px;
-        margin: 0 auto 5vh auto !important;
-        position: sticky;
-        top: 15vh;
-        background: #131313;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 40px;
-        box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 5rem;
-        transform-origin: center top;
-        overflow: hidden;
-      }
-
-      .solution-content > div {
-        flex: 1;
+        height: auto;
+        min-height: 70vh;
+        flex-direction: column;
+        justify-content: center;
+        padding: 3rem 2rem;
+        text-align: center;
+        top: 10vh;
       }
 
       .solution-text {
-        padding-right: 3rem;
+        padding-right: 0;
+        margin-bottom: 2rem;
       }
 
-      /* --- FINAL CTA VIEWFINDER OVERRIDES --- */
-      .final-cta {
-        position: relative;
-        /* Needed for absolute positioning of viewfinder */
-        overflow: hidden;
-        /* Keep corners inside */
+      .problem-card {
+        width: 80vw;
+        min-width: unset;
       }
 
-      /* Ensure CTA text is clickable and visible above the overlay */
-      .final-cta h2,
-      .final-cta h3,
-      .final-cta p,
-      .final-cta .cta-buttons {
-        position: relative;
-        z-index: 2;
+      .hero-visual {
+        display: none;
       }
+    }
+  </style>
+</head>
 
-      /* Specific styles for the CTA viewfinder instance */
-      .final-cta .viewfinder-ui {
-        height: 100%;
-        /* Fit to the section, don't use vh */
-        opacity: 0.5;
-        /* Slightly subtler than hero */
-      }
+<body>
 
-      @media (max-width: 900px) {
-        .solution-content {
-          height: auto;
-          min-height: 70vh;
-          flex-direction: column;
-          justify-content: center;
-          padding: 3rem 2rem;
-          text-align: center;
-          top: 10vh;
-        }
+  <div class="broadcast-splash">
+    <div class="splash-content">
+      <div class="signal-loader">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <div class="splash-text">
+        INITIALIZING ENGINE<br />
+        <span class="loading-pct">0%</span>
+      </div>
+    </div>
+    <div class="scanline"></div>
+  </div>
 
-        .solution-text {
-          padding-right: 0;
-          margin-bottom: 2rem;
-        }
+  <nav id="navbar">
+    <div class="logo"><a href="#home">GRAPHYNE</a></div>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#solution">Solution</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#team">Team</a>
+    </div>
+  </nav>
 
-        .problem-card {
-          width: 80vw;
-          min-width: unset;
-        }
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="viewfinder-ui">
+        <div class="vf-corner tl"></div>
+        <div class="vf-corner tr"></div>
+        <div class="vf-corner bl"></div>
+        <div class="vf-corner br"></div>
 
-        .hero-visual {
-          display: none;
-        }
-      }
-    </style>
-  </head>
+        <div class="vf-stat top-left">
+          <span class="rec-dot"></span> REC
+          <span class="timecode">00:00:00:00</span>
+        </div>
+        <div class="vf-stat top-right">4K 60FPS</div>
+        <div class="vf-stat bottom-left">ISO 800</div>
+        <div class="vf-stat bottom-center safe-area-marker">+</div>
+        <div class="vf-stat bottom-right">SHUTTER 1/60</div>
+      </div>
+    </div>
 
-  <body>
     <div class="hero-visual">
       <div class="broadcast-card">
         <div class="live-indicator"><span class="dot"></span> LIVE</div>
@@ -150,1161 +196,1054 @@
       </div>
     </div>
 
-    <div class="broadcast-splash">
-      <div class="splash-content">
-        <div class="signal-loader">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-        <div class="splash-text">
-          INITIALIZING ENGINE<br />
-          <span class="loading-pct">0%</span>
-        </div>
-      </div>
-      <div class="scanline"></div>
+    <div class="hero-content">
+      <h1>
+        <span class="word">The Graphics Engine of the Future</span>
+      </h1>
+      <p>
+        The all-in-one web platform for building, managing, and playing out
+        real-time broadcast graphics.<br />No expensive hardware. No complex
+        coding. Just pure creative power in your hands.
+      </p>
+      <form id="mailing-form" style="margin-top: 2rem; position: relative">
+        <input type="email" name="email" placeholder="Enter your email..." required class="email-input" />
+
+        <input type="text" name="honeypot" style="display: none !important" tabindex="-1" autocomplete="off" />
+
+        <button type="submit" class="btn btn-secondary submit-btn">
+          Join Waitlist
+        </button>
+      </form>
     </div>
+  </section>
 
-    <nav id="navbar">
-      <div class="logo"><a href="#home">GRAPHYNE</a></div>
-      <div class="nav-links">
-        <a href="#problem">Problem</a>
-        <a href="#solution">Solution</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#team">Team</a>
-      </div>
-    </nav>
-
-    <section class="hero" id="home">
-      <div class="hero-bg">
-        <div class="viewfinder-ui">
-          <div class="vf-corner tl"></div>
-          <div class="vf-corner tr"></div>
-          <div class="vf-corner bl"></div>
-          <div class="vf-corner br"></div>
-
-          <div class="vf-stat top-left">
-            <span class="rec-dot"></span> REC
-            <span class="timecode">00:00:00:00</span>
-          </div>
-          <div class="vf-stat top-right">4K 60FPS</div>
-          <div class="vf-stat bottom-left">ISO 800</div>
-          <div class="vf-stat bottom-center safe-area-marker">+</div>
-          <div class="vf-stat bottom-right">SHUTTER 1/60</div>
-        </div>
-      </div>
-
-      <div class="hero-content">
-        <h1>
-          <span class="word">The Graphics Engine of the Future</span>
-        </h1>
-        <p>
-          The all-in-one web platform for building, managing, and playing out
-          real-time broadcast graphics.<br />No expensive hardware. No complex
-          coding. Just pure creative power in your hands.
-        </p>
-        <form id="mailing-form" style="margin-top: 2rem; position: relative">
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your email..."
-            required
-            class="email-input"
-          />
-
-          <input
-            type="text"
-            name="honeypot"
-            style="display: none !important"
-            tabindex="-1"
-            autocomplete="off"
-          />
-
-          <button type="submit" class="btn btn-secondary submit-btn">
-            Join Waitlist
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <section class="problem" id="problem" style="margin-top: 0; padding-top: 0">
-      <div
-        style="
+  <section class="problem" id="problem" style="margin-top: 0; padding-top: 0">
+    <div style="
           text-align: center;
           max-width: 1200px;
           margin: 0 auto 4rem auto;
           padding-top: 100px;
           margin-top: 0;
           padding-top: 0;
-        "
-      >
-        <h2 class="section-title">Tell Me If This Sounds Familiar</h2>
-      </div>
+        ">
+      <h2 class="section-title">Tell Me If This Sounds Familiar</h2>
+    </div>
 
-      <div class="problem-grid">
-        <div class="problem-card">
-          <div class="problem-icon animated-icon money-bag-icon"></div>
-          <h3>Pricing That Hurts Your Wallet</h3>
-          <p>
-            Professional graphics shouldn't require taking out a second mortgage
-            on the studio.
-          </p>
-        </div>
-        <div class="problem-card">
-          <div class="problem-icon animated-icon clock-icon"></div>
-          <h3>You Speak "Rundown", Not "Syntax Error"</h3>
-          <p>Debugging CSS five minutes before air? Hard pass.</p>
-        </div>
-        <div class="problem-card">
-          <div class="problem-icon animated-icon plug-icon"></div>
-          <h3>The "Duct Tape & SDI" Workflow</h3>
-          <p>
-            Spreadsheets, three different converters, a panic attack, and a
-            dream.
-          </p>
-        </div>
-        <div class="problem-card">
-          <div
-            class="problem-icon animated-icon"
-            style="
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon animated-icon money-bag-icon"></div>
+        <h3>Pricing That Hurts Your Wallet</h3>
+        <p>
+          Professional graphics shouldn't require taking out a second mortgage
+          on the studio.
+        </p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon animated-icon clock-icon"></div>
+        <h3>You Speak "Rundown", Not "Syntax Error"</h3>
+        <p>Debugging CSS five minutes before air? Hard pass.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon animated-icon plug-icon"></div>
+        <h3>The "Duct Tape & SDI" Workflow</h3>
+        <p>
+          Spreadsheets, three different converters, a panic attack, and a
+          dream.
+        </p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon animated-icon" style="
               background: linear-gradient(135deg, #00d4ff, #0099ff);
               border-radius: 50%;
               box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
-            "
-          ></div>
-          <h3>That a Render Engine or a Space Heater?</h3>
-          <p>
-            Stop relying on heavy dedicated machines, free yourself from
-            proprietary equipment chains.
-          </p>
-        </div>
-
-        <div class="final-statement">
-          <strong>Your Studio Deserves Better!</strong>
-        </div>
-      </div>
-    </section>
-
-    <section class="solution" id="solution">
-      <div style="text-align: center; margin: 0 auto 4rem; padding-top: 4rem">
-        <h2 class="section-title" style="margin-top: 0">
-          Your Complete Broadcast Graphics Arsenal
-        </h2>
-        <p class="section-subtitle">
-          Everything you need. Nothing you don't. Built with cutting-edge web
-          tech for speed, precision, and unlimited creativity.
+            "></div>
+        <h3>That a Render Engine or a Space Heater?</h3>
+        <p>
+          Stop relying on heavy dedicated machines, free yourself from
+          proprietary equipment chains.
         </p>
       </div>
 
-      <div class="solution-content">
-        <div class="solution-text" style="width: 50%">
-          <h2>Graphics Creator</h2>
-          <h3
-            style="
+      <div class="final-statement">
+        <strong>Your Studio Deserves Better!</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="solution" id="solution">
+    <div style="text-align: center; margin: 0 auto 4rem; padding-top: 4rem">
+      <h2 class="section-title" style="margin-top: 0">
+        Your Complete Broadcast Graphics Arsenal
+      </h2>
+      <p class="section-subtitle">
+        Everything you need. Nothing you don't. Built with cutting-edge web
+        tech for speed, precision, and unlimited creativity.
+      </p>
+    </div>
+
+    <div class="solution-content">
+      <div class="solution-text" style="width: 50%">
+        <h2>Graphics Creator</h2>
+        <h3 style="
               font-size: 1.3rem;
               margin-bottom: 1.5rem;
               color: var(--sunset);
-            "
-          >
-            Design Like a Visionary. Deploy Like a Pro.
-          </h3>
-          <ul class="solution-features">
-            <li>Drag-and-drop WYSIWYG editor</li>
-            <li>Built-in GSAP & React animation tools</li>
-            <li>Layer-based timeline controls</li>
-            <li>Generate clean Graphic Files</li>
-          </ul>
-          <p
-            style="
+            ">
+          Design Like a Visionary. Deploy Like a Pro.
+        </h3>
+        <ul class="solution-features">
+          <li>Drag-and-drop WYSIWYG editor</li>
+          <li>Built-in GSAP & React animation tools</li>
+          <li>Layer-based timeline controls</li>
+          <li>Generate clean Graphic Files</li>
+        </ul>
+        <p style="
               margin-top: 2rem;
               color: var(--text-secondary);
               font-style: italic;
-            "
-          >
-            Perfect for teams where designers, producers, and developers
-            overlap. Create both quick-turnaround overlays and deeply branded
-            packages.
-          </p>
-        </div>
-        <div class="solution-demo">
-          <div class="solution-demo drag-demo-wrapper">
-            <div class="creator-window">
-              <div class="window-header">
-                <div class="window-controls">
-                  <span class="dot red"></span>
-                  <span class="dot yellow"></span>
-                  <span class="dot green"></span>
-                </div>
-                <span class="window-title">Graphyne Editor - Project 01</span>
-                <div class="rec-badge">REC</div>
-              </div>
-
-              <div class="window-body">
-                <div class="layers-panel">
-                  <div class="panel-label">LAYERS</div>
-
-                  <div class="drag-item layer-1">
-                    <span class="drag-handle">::</span>
-                    <span class="layer-icon text-icon">T</span>
-                    <span class="layer-text">Score</span>
-                  </div>
-                  <div class="drag-item layer-2">
-                    <span class="drag-handle">::</span>
-                    <span class="layer-icon shape-icon"></span>
-                    <span class="layer-text">Background</span>
-                  </div>
-                  <div class="drag-item layer-3">
-                    <span class="drag-handle">::</span>
-                    <span class="layer-icon image-icon"></span>
-                    <span class="layer-text">Logo</span>
-                  </div>
-                </div>
-
-                <div class="canvas-panel">
-                  <div class="canvas-elem elem-bg"></div>
-                  <div class="canvas-elem elem-text">Breaking News</div>
-                  <div class="canvas-elem elem-logo">
-                    <div class="logo-inner"></div>
-                  </div>
-
-                  <div class="safe-guide"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mouse-cursor">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z"
-                  fill="white"
-                  stroke="black"
-                  stroke-width="2"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+            ">
+          Perfect for teams where designers, producers, and developers
+          overlap. Create both quick-turnaround overlays and deeply branded
+          packages.
+        </p>
       </div>
-
-      <div class="solution-content">
-        <div class="solution-demo data-demo-wrapper">
-          <div class="data-terminal">
-            <div class="terminal-header">
-              <div class="connection-status">
-                <span class="signal-dot"></span>
-                <span class="status-text">WS://CONNECT.GRAPHYNE</span>
+      <div class="solution-demo">
+        <div class="solution-demo drag-demo-wrapper">
+          <div class="creator-window">
+            <div class="window-header">
+              <div class="window-controls">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
               </div>
-              <div class="latency-badge">12ms</div>
+              <span class="window-title">Graphyne Editor - Project 01</span>
+              <div class="rec-badge">REC</div>
             </div>
 
-            <div class="terminal-body">
-              <div class="code-line">{</div>
-              <div class="code-line indent">
-                <span class="json-key">"match_time"</span>:
-                <span class="json-string time-display">"12:45:00"</span>,
-              </div>
-              <div class="code-line indent highlight-row viewers-row">
-                <span class="json-key">"live_viewers"</span>:
-                <span class="json-number viewers-count">12,450</span>,
-              </div>
-              <div class="code-line indent highlight-row score-row">
-                <span class="json-key">"home_score"</span>:
-                <span class="json-number score-val">2</span>
-              </div>
-              <div class="code-line">}</div>
-            </div>
+            <div class="window-body">
+              <div class="layers-panel">
+                <div class="panel-label">LAYERS</div>
 
-            <div class="data-poller"></div>
-          </div>
-        </div>
-        <div class="solution-text">
-          <h2>Live Data Engine</h2>
-          <h3
-            style="
-              font-size: 1.5rem;
-              margin-bottom: 1.5rem;
-              color: var(--sunset);
-            "
-          >
-            Real-Time Data. Zero Chaos.
-          </h3>
-          <ul class="solution-features">
-            <li>Connect JSON / REST / Google Sheets</li>
-            <li>Auto-refresh for live stats, timers, etc</li>
-            <li>Manual override panel for emergencies</li>
-            <li>Conditional formatting</li>
-          </ul>
-          <p
-            style="
-              margin-top: 2rem;
-              color: var(--text-secondary);
-              font-style: italic;
-            "
-          >
-            Never push the wrong score, name, or stat again. Your graphics stay
-            fast, accurate, and responsive.
-          </p>
-        </div>
-      </div>
+                <div class="drag-item layer-1">
+                  <span class="drag-handle">::</span>
+                  <span class="layer-icon text-icon">T</span>
+                  <span class="layer-text">Score</span>
+                </div>
+                <div class="drag-item layer-2">
+                  <span class="drag-handle">::</span>
+                  <span class="layer-icon shape-icon"></span>
+                  <span class="layer-text">Background</span>
+                </div>
+                <div class="drag-item layer-3">
+                  <span class="drag-handle">::</span>
+                  <span class="layer-icon image-icon"></span>
+                  <span class="layer-text">Logo</span>
+                </div>
+              </div>
 
-      <div class="solution-content" style="gap: 2rem">
-        <div class="solution-text">
-          <h2>Playout Engine</h2>
-          <h3
-            style="font-size: 1rem; margin-bottom: 1.5rem; color: var(--sunset)"
-          >
-            Broadcast-Ready Control. Zero Stress. Total Confidence.
-          </h3>
-          <ul class="solution-features">
-            <li>Build playlists for events, matches, shows</li>
-            <li>Drag-and-drop ordering with set durations & transitions</li>
-            <li>One-click playout with preview</li>
-            <li>HTML URL works with OBS, vMix, Wirecast, and more</li>
-          </ul>
-          <p
-            style="
-              margin-top: 2rem;
-              color: var(--text-secondary);
-              font-style: italic;
-            "
-          >
-            Confidence and control for producers and technical directors, even
-            in high-pressure environments.
-          </p>
-        </div>
-        <div class="solution-demo playout-demo-wrapper">
-          <div class="playlist-panel">
-            <div class="panel-header">
-              <span class="header-title">RUNDOWN</span>
-              <span class="time-readout">12:00:00:00</span>
-            </div>
+              <div class="canvas-panel">
+                <div class="canvas-elem elem-bg"></div>
+                <div class="canvas-elem elem-text">Breaking News</div>
+                <div class="canvas-elem elem-logo">
+                  <div class="logo-inner"></div>
+                </div>
 
-            <div class="playlist-list">
-              <div class="playlist-item item-1">
-                <div class="status-col"><span class="status-light"></span></div>
-                <div class="name-col">Intro Sting</div>
-                <div class="dur-col">00:05</div>
+                <div class="safe-guide"></div>
               </div>
-              <div class="playlist-item item-2">
-                <div class="status-col"><span class="status-light"></span></div>
-                <div class="name-col">L3: Host Name</div>
-                <div class="dur-col">AUTO</div>
-              </div>
-              <div class="playlist-item item-3">
-                <div class="status-col"><span class="status-light"></span></div>
-                <div class="name-col">Ticker: Finance</div>
-                <div class="dur-col">LOOP</div>
-              </div>
-              <div class="playlist-item item-4">
-                <div class="status-col"><span class="status-light"></span></div>
-                <div class="name-col">Outro</div>
-                <div class="dur-col">00:10</div>
-              </div>
-            </div>
-
-            <div class="control-bar">
-              <div class="btn-play">▶ TAKE</div>
             </div>
           </div>
 
-          <div class="program-monitor">
-            <div class="monitor-label">PROGRAM</div>
-            <div class="video-feed">
-              <div class="feed-content">
-                <div class="studio-bg">
-                  <div class="wall-panel left-panel"></div>
-                  <div class="wall-panel right-panel"></div>
-                  <div class="bg-screen"></div>
-                </div>
-
-                <div class="anchor-shape">
-                  <div class="head"></div>
-                  <div class="body">
-                    <div class="shirt-v"></div>
-                    <div class="tie"></div>
-                  </div>
-                </div>
-
-                <div class="news-desk">
-                  <div class="desk-surface"></div>
-                  <div class="desk-front"></div>
-                </div>
-              </div>
-
-              <div class="live-graphic">
-                <div class="graphic-accent"></div>
-                <div class="graphic-content">
-                  <div class="graphic-title">WALTER CRONKITE</div>
-                  <div class="graphic-subtitle">Anchor</div>
-                </div>
-              </div>
-
-              <div class="pgm-badge">LIVE</div>
-            </div>
-          </div>
-
-          <div class="mouse-cursor2">
+          <div class="mouse-cursor">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z"
-                fill="white"
-                stroke="black"
-                stroke-width="2"
-                stroke-linejoin="round"
-              />
+              <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="white" stroke="black" stroke-width="2"
+                stroke-linejoin="round" />
             </svg>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="pricing" id="pricing">
-      <div style="text-align: center; margin: 0 auto 5rem">
-        <h2 class="section-title">
-          Enterprise-Grade Graphics. Studio-Friendly Pricing.
-        </h2>
-        <p class="section-subtitle">
-          No hidden fees. No surprises. Just powerful broadcast tools that fit
-          your budget.
+    <div class="solution-content">
+      <div class="solution-demo data-demo-wrapper">
+        <div class="data-terminal">
+          <div class="terminal-header">
+            <div class="connection-status">
+              <span class="signal-dot"></span>
+              <span class="status-text">WS://CONNECT.GRAPHYNE</span>
+            </div>
+            <div class="latency-badge">12ms</div>
+          </div>
+
+          <div class="terminal-body">
+            <div class="code-line">{</div>
+            <div class="code-line indent">
+              <span class="json-key">"match_time"</span>:
+              <span class="json-string time-display">"12:45:00"</span>,
+            </div>
+            <div class="code-line indent highlight-row viewers-row">
+              <span class="json-key">"live_viewers"</span>:
+              <span class="json-number viewers-count">12,450</span>,
+            </div>
+            <div class="code-line indent highlight-row score-row">
+              <span class="json-key">"home_score"</span>:
+              <span class="json-number score-val">2</span>
+            </div>
+            <div class="code-line">}</div>
+          </div>
+
+          <div class="data-poller"></div>
+        </div>
+      </div>
+      <div class="solution-text">
+        <h2>Live Data Engine</h2>
+        <h3 style="
+              font-size: 1.5rem;
+              margin-bottom: 1.5rem;
+              color: var(--sunset);
+            ">
+          Real-Time Data. Zero Chaos.
+        </h3>
+        <ul class="solution-features">
+          <li>Connect JSON / REST / Google Sheets</li>
+          <li>Auto-refresh for live stats, timers, etc</li>
+          <li>Manual override panel for emergencies</li>
+          <li>Conditional formatting</li>
+        </ul>
+        <p style="
+              margin-top: 2rem;
+              color: var(--text-secondary);
+              font-style: italic;
+            ">
+          Never push the wrong score, name, or stat again. Your graphics stay
+          fast, accurate, and responsive.
         </p>
       </div>
-      <div class="pricing-grid">
-        <div class="pricing-card featured">
-          <h3>Professional</h3>
-          <p style="color: rgba(255, 255, 255, 0.8); margin: 1rem 0">
-            For everyone!
-          </p>
-          <div class="price">Coming Soon!</div>
-          <a
-            href="#home"
-            class="btn btn-primary"
-            style="width: 100%; margin-top: 2rem"
-            >Stay in touch!</a
-          >
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <section class="team" id="team">
-      <div style="text-align: center; max-width: 900px; margin: 0 auto 5rem">
-        <h2 class="section-title">Built by Broadcasters</h2>
-        <p class="section-subtitle">
-          A team obsessed with making your production life effortless and your
-          graphics legendary.
+    <div class="solution-content" style="gap: 2rem">
+      <div class="solution-text">
+        <h2>Playout Engine</h2>
+        <h3 style="font-size: 1rem; margin-bottom: 1.5rem; color: var(--sunset)">
+          Broadcast-Ready Control. Zero Stress. Total Confidence.
+        </h3>
+        <ul class="solution-features">
+          <li>Build playlists for events, matches, shows</li>
+          <li>Drag-and-drop ordering with set durations & transitions</li>
+          <li>One-click playout with preview</li>
+          <li>HTML URL works with OBS, vMix, Wirecast, and more</li>
+        </ul>
+        <p style="
+              margin-top: 2rem;
+              color: var(--text-secondary);
+              font-style: italic;
+            ">
+          Confidence and control for producers and technical directors, even
+          in high-pressure environments.
         </p>
       </div>
-
-      <div class="team-grid">
-        <div class="team-card">
-          <div class="member-img">
-            <img
-              src="https://ui-avatars.com/api/?name=Dilahara+S&background=FF9100&color=000"
-              alt="Dilhara De Silva"
-            />
+      <div class="solution-demo playout-demo-wrapper">
+        <div class="playlist-panel">
+          <div class="panel-header">
+            <span class="header-title">RUNDOWN</span>
+            <span class="time-readout">12:00:00:00</span>
           </div>
-          <h3>Dilhara De Silva</h3>
-          <span class="member-role">Founder & CEO</span>
+
+          <div class="playlist-list">
+            <div class="playlist-item item-1">
+              <div class="status-col"><span class="status-light"></span></div>
+              <div class="name-col">Intro Sting</div>
+              <div class="dur-col">00:05</div>
+            </div>
+            <div class="playlist-item item-2">
+              <div class="status-col"><span class="status-light"></span></div>
+              <div class="name-col">L3: Host Name</div>
+              <div class="dur-col">AUTO</div>
+            </div>
+            <div class="playlist-item item-3">
+              <div class="status-col"><span class="status-light"></span></div>
+              <div class="name-col">Ticker: Finance</div>
+              <div class="dur-col">LOOP</div>
+            </div>
+            <div class="playlist-item item-4">
+              <div class="status-col"><span class="status-light"></span></div>
+              <div class="name-col">Outro</div>
+              <div class="dur-col">00:10</div>
+            </div>
+          </div>
+
+          <div class="control-bar">
+            <div class="btn-play">▶ TAKE</div>
+          </div>
         </div>
 
-        <div class="team-card">
-          <div class="member-img">
-            <img
-              src="https://ui-avatars.com/api/?name=Parami+A&background=FF9100&color=000"
-              alt="Parami Athukorala"
-            />
+        <div class="program-monitor">
+          <div class="monitor-label">PROGRAM</div>
+          <div class="video-feed">
+            <div class="feed-content">
+              <div class="studio-bg">
+                <div class="wall-panel left-panel"></div>
+                <div class="wall-panel right-panel"></div>
+                <div class="bg-screen"></div>
+              </div>
+
+              <div class="anchor-shape">
+                <div class="head"></div>
+                <div class="body">
+                  <div class="shirt-v"></div>
+                  <div class="tie"></div>
+                </div>
+              </div>
+
+              <div class="news-desk">
+                <div class="desk-surface"></div>
+                <div class="desk-front"></div>
+              </div>
+            </div>
+
+            <div class="live-graphic">
+              <div class="graphic-accent"></div>
+              <div class="graphic-content">
+                <div class="graphic-title">WALTER CRONKITE</div>
+                <div class="graphic-subtitle">Anchor</div>
+              </div>
+            </div>
+
+            <div class="pgm-badge">LIVE</div>
           </div>
-          <h3>Parami Athukorala</h3>
-          <span class="member-role">Lead Engineer</span>
         </div>
 
-        <div class="team-card">
-          <div class="member-img">
-            <img
-              src="https://ui-avatars.com/api/?name=Nikini+M&background=FF9100&color=000"
-              alt="Nikini Madugoda"
-            />
-          </div>
-          <h3>Nikini Madugoda</h3>
-          <span class="member-role">Head of Product</span>
-        </div>
-
-        <div class="team-card">
-          <div class="member-img">
-            <img
-              src="https://ui-avatars.com/api/?name=Anudhi+L&background=FFC880&color=000"
-              alt="Anudhi Liyanage"
-            />
-          </div>
-          <h3>Anudhi Liyanage</h3>
-          <span class="member-role">Graphics Developer</span>
-        </div>
-
-        <div class="team-card">
-          <div class="member-img">
-            <img
-              src="https://ui-avatars.com/api/?name=Nishika+S&background=FFC880&color=000"
-              alt="Nishika Sharon"
-            />
-          </div>
-          <h3>Nishika Sharon</h3>
-          <span class="member-role">Customer Success</span>
+        <div class="mouse-cursor2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="white" stroke="black" stroke-width="2"
+              stroke-linejoin="round" />
+          </svg>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="final-cta">
-      <div class="viewfinder-ui">
-        <div class="vf-corner tl"></div>
-        <div class="vf-corner tr"></div>
-        <div class="vf-corner bl"></div>
-        <div class="vf-corner br"></div>
+  <section class="pricing" id="pricing">
+    <div style="text-align: center; margin: 0 auto 5rem">
+      <h2 class="section-title">
+        Enterprise-Grade Graphics. Studio-Friendly Pricing.
+      </h2>
+      <p class="section-subtitle">
+        No hidden fees. No surprises. Just powerful broadcast tools that fit
+        your budget.
+      </p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card" style="width: 70%; margin: 0 auto">
+        <h3>Professional</h3>
+        <p style="color: rgba(255, 255, 255, 0.8); margin: 1rem 0">
+          For everyone!
+        </p>
+        <div class="price">Coming Soon!</div>
+        <a href="#home" class="btn btn-primary" style="width: 50%; margin-top: 2rem">Stay in touch!</a>
+      </div>
+    </div>
+  </section>
 
-        <div class="vf-stat top-left"><span class="rec-dot"></span> REC</div>
-        <div class="vf-stat bottom-right">ISO 100</div>
+  <section class="team" id="team">
+    <div style="text-align: center; max-width: 900px; margin: 0 auto 5rem">
+      <h2 class="section-title">Built by Broadcasters</h2>
+      <p class="section-subtitle">
+        A team obsessed with making your production life effortless and your
+        graphics legendary.
+      </p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="member-img">
+          <img src="https://ui-avatars.com/api/?name=Dilahara+S&background=FF9100&color=000" alt="Dilhara De Silva" />
+        </div>
+        <h3>Dilhara De Silva</h3>
+        <span class="member-role">Founder & CEO</span>
       </div>
 
-      <h2 style="font-size: 3rem; padding-bottom: 0">
-        You Don't Need Expensive Hardware.<br />
-        You need
-        <span
-          style="
+      <div class="team-card">
+        <div class="member-img">
+          <img src="https://ui-avatars.com/api/?name=Parami+A&background=FF9100&color=000" alt="Parami Athukorala" />
+        </div>
+        <h3>Parami Athukorala</h3>
+        <span class="member-role">Lead Engineer</span>
+      </div>
+
+      <div class="team-card">
+        <div class="member-img">
+          <img src="https://ui-avatars.com/api/?name=Nikini+M&background=FF9100&color=000" alt="Nikini Madugoda" />
+        </div>
+        <h3>Nikini Madugoda</h3>
+        <span class="member-role">Head of Product</span>
+      </div>
+
+      <div class="team-card">
+        <div class="member-img">
+          <img src="https://ui-avatars.com/api/?name=Anudhi+L&background=FFC880&color=000" alt="Anudhi Liyanage" />
+        </div>
+        <h3>Anudhi Liyanage</h3>
+        <span class="member-role">Graphics Developer</span>
+      </div>
+
+      <div class="team-card">
+        <div class="member-img">
+          <img src="https://ui-avatars.com/api/?name=Nishika+S&background=FFC880&color=000" alt="Nishika Sharon" />
+        </div>
+        <h3>Nishika Sharon</h3>
+        <span class="member-role">Customer Success</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="viewfinder-ui">
+      <div class="vf-corner tl"></div>
+      <div class="vf-corner tr"></div>
+      <div class="vf-corner bl"></div>
+      <div class="vf-corner br"></div>
+
+      <div class="vf-stat top-left"><span class="rec-dot"></span> REC</div>
+      <div class="vf-stat bottom-right">ISO 100</div>
+    </div>
+
+    <h2 style="font-size: 3rem; padding-bottom: 0">
+      You Don't Need Expensive Hardware.<br />
+      You need
+      <span style="
             background: linear-gradient(90deg, #a45cf6, #ec4899);
             background-clip: text;
             -webkit-text-fill-color: transparent;
-          "
-          >Graphyne.</span
-        >
-      </h2>
-      <p>
-        Create legendary graphics. Automate the chaos. Play out with unstoppable
-        confidence.
-      </p>
-      <div class="cta-buttons">
-        <a href="mailto:graphynelive@gmail.com" class="btn btn-secondary"
-          >Talk to Our Team</a
-        >
-      </div>
-    </section>
+          ">Graphyne.</span>
+    </h2>
+    <p>
+      Create legendary graphics. Automate the chaos. Play out with unstoppable
+      confidence.
+    </p>
+    <div class="cta-buttons">
+      <a href="mailto:graphynelive@gmail.com" class="btn btn-secondary">Talk to Our Team</a>
+    </div>
+  </section>
 
-    <footer>
-      <div class="footer-bottom">
-        <p>&copy; 2025 GRAPHYNE. All rights reserved.</p>
-      </div>
-    </footer>
+  <footer>
+    <div class="footer-bottom">
+      <p>&copy; 2025 GRAPHYNE. All rights reserved.</p>
+    </div>
+  </footer>
 
-    <script>
-      const form = document.getElementById("mailing-form");
-      const feedback = document.getElementById("form-feedback");
-      const submitBtn = form.querySelector(".submit-btn");
+  <script>
+    const form = document.getElementById("mailing-form");
+    const feedback = document.getElementById("form-feedback");
+    const submitBtn = form.querySelector(".submit-btn");
 
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-        // 1. Show loading state
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = "Joining...";
-        submitBtn.classList.add("loading");
-        submitBtn.disabled = true; // Prevent double-clicking
+      // 1. Show loading state
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = "Joining...";
+      submitBtn.classList.add("loading");
+      submitBtn.disabled = true; // Prevent double-clicking
 
-        const scriptURL =
-          "https://script.google.com/macros/s/AKfycbwV0HowyrsHcV4BI90x7NkE3w196gFcZlBfelOf4ROjzYpXrqk_hsnbERQ68GYse664xA/exec";
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbwV0HowyrsHcV4BI90x7NkE3w196gFcZlBfelOf4ROjzYpXrqk_hsnbERQ68GYse664xA/exec";
 
-        fetch(scriptURL, { method: "POST", body: new FormData(form) })
-          .then((response) => {
-            // 2. Success!
-            form.reset();
+      fetch(scriptURL, { method: "POST", body: new FormData(form) })
+        .then((response) => {
+          // 2. Success!
+          form.reset();
 
-            // Change button text to indicate success
-            submitBtn.textContent = "Success!";
+          // Change button text to indicate success
+          submitBtn.textContent = "Success!";
 
-            const originalColor = submitBtn.style.background;
-            submitBtn.style.borderColor = "#84cf8f"; // Success Green
-            submitBtn.classList.remove("loading");
+          const originalColor = submitBtn.style.background;
+          submitBtn.style.borderColor = "#84cf8f"; // Success Green
+          submitBtn.classList.remove("loading");
 
-            // 3. Reset button after 3 seconds
-            setTimeout(() => {
-              submitBtn.textContent = originalText;
-              submitBtn.style.background = originalColor;
-              submitBtn.disabled = false;
-            }, 3000);
-          })
-          .catch((error) => {
-            console.error("Error!", error.message);
-            submitBtn.textContent = "Error! Try again.";
-            submitBtn.classList.remove("loading");
+          // 3. Reset button after 3 seconds
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = originalColor;
             submitBtn.disabled = false;
+          }, 3000);
+        })
+        .catch((error) => {
+          console.error("Error!", error.message);
+          submitBtn.textContent = "Error! Try again.";
+          submitBtn.classList.remove("loading");
+          submitBtn.disabled = false;
 
-            setTimeout(() => {
-              submitBtn.textContent = originalText;
-              submitBtn.style.background = originalColor;
-              submitBtn.disabled = false;
-            }, 3000);
-          });
-      });
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      window.addEventListener("scroll", () => {
-        const navbar = document.getElementById("navbar");
-        if (window.scrollY > 100) navbar.classList.add("scrolled");
-        else navbar.classList.remove("scrolled");
-      });
-
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute("href"));
-          if (target)
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = originalColor;
+            submitBtn.disabled = false;
+          }, 3000);
         });
+    });
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.addEventListener("scroll", () => {
+      const navbar = document.getElementById("navbar");
+      if (window.scrollY > 100) navbar.classList.add("scrolled");
+      else navbar.classList.remove("scrolled");
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target)
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: "0px 0px -100px 0px",
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("animate");
+      });
+    }, observerOptions);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const animateElements = document.querySelectorAll(
+        ".section-title, .pricing-card, .testimonial-card",
+      );
+      animateElements.forEach((el) => observer.observe(el));
+
+      runBroadcastSplash();
+      startDragAnimation();
+      startDataAnimation();
+      startPlayoutAnimation();
+
+      // --- HORIZONTAL SCROLL LOGIC ---
+      ScrollTrigger.matchMedia({
+        "(min-width: 901px)": function () {
+          const problemSection = document.getElementById("problem");
+          const problemTrack = document.querySelector(".problem-grid");
+
+          if (problemSection && problemTrack) {
+            const getScrollAmount = () => {
+              return -(problemTrack.scrollWidth - 1200);
+            };
+
+            gsap.to(problemTrack, {
+              x: getScrollAmount,
+              ease: "none",
+              scrollTrigger: {
+                trigger: problemSection,
+                start: "top 5%",
+                end: () =>
+                  `+=${problemTrack.scrollWidth - window.innerWidth}`,
+                pin: true,
+                scrub: 1,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+        },
       });
 
-      const observerOptions = {
-        threshold: 0.2,
-        rootMargin: "0px 0px -100px 0px",
-      };
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("animate");
-        });
-      }, observerOptions);
+      // --- STACKED CARDS LOGIC ---
+      ScrollTrigger.matchMedia({
+        "(min-width: 901px)": function () {
+          const solutionCards = gsap.utils.toArray(".solution-content");
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const animateElements = document.querySelectorAll(
-          ".section-title, .pricing-card, .testimonial-card",
-        );
-        animateElements.forEach((el) => observer.observe(el));
-
-        runBroadcastSplash();
-        startDragAnimation();
-        startDataAnimation();
-        startPlayoutAnimation();
-
-        // --- HORIZONTAL SCROLL LOGIC ---
-        ScrollTrigger.matchMedia({
-          "(min-width: 901px)": function () {
-            const problemSection = document.getElementById("problem");
-            const problemTrack = document.querySelector(".problem-grid");
-
-            if (problemSection && problemTrack) {
-              const getScrollAmount = () => {
-                return -(problemTrack.scrollWidth - 1200);
-              };
-
-              gsap.to(problemTrack, {
-                x: getScrollAmount,
-                ease: "none",
+          solutionCards.forEach((card, index) => {
+            if (index < solutionCards.length - 1) {
+              gsap.to(card, {
+                scale: 0.9,
+                opacity: 0.5,
+                filter: "blur(5px)",
                 scrollTrigger: {
-                  trigger: problemSection,
-                  start: "top 5%",
-                  end: () =>
-                    `+=${problemTrack.scrollWidth - window.innerWidth}`,
-                  pin: true,
-                  scrub: 1,
-                  invalidateOnRefresh: true,
+                  trigger: card,
+                  start: "top 15%",
+                  end: "bottom 15%",
+                  scrub: true,
                 },
               });
             }
-          },
+          });
+        },
+      });
+    });
+
+    function runBroadcastSplash() {
+      const pct = document.querySelector(".loading-pct");
+      const timecode = document.querySelector(".timecode");
+
+      let load = 0;
+      const interval = setInterval(() => {
+        load += Math.floor(Math.random() * 10) + 5;
+        if (load > 100) load = 100;
+        pct.textContent = load + "%";
+
+        if (load === 100) {
+          clearInterval(interval);
+          const tl = gsap.timeline();
+
+          tl.to(".broadcast-splash", {
+            duration: 0.2,
+            skewX: 10,
+            scale: 1.1,
+            filter: "brightness(2)",
+            ease: "power4.in",
+          })
+            .to(".broadcast-splash", {
+              opacity: 0,
+              display: "none",
+              duration: 0.3,
+            })
+            .add(animateHeroVisual)
+            .add(startViewfinder);
+        }
+      }, 100);
+
+      let sec = 0,
+        min = 0,
+        hour = 0,
+        frame = 0;
+      setInterval(() => {
+        frame++;
+        if (frame == 60) {
+          frame = 0;
+          sec++;
+        }
+        if (sec == 60) {
+          sec = 0;
+          min++;
+        }
+        const f = (n) => n.toString().padStart(2, "0");
+        // Note: This updates all timecodes on the page, including the new footer one
+        document.querySelectorAll(".timecode").forEach((el) => {
+          el.textContent = `00:${f(min)}:${f(sec)}:${f(frame)}`;
         });
+      }, 1000 / 60);
+    }
 
-        // --- STACKED CARDS LOGIC ---
-        ScrollTrigger.matchMedia({
-          "(min-width: 901px)": function () {
-            const solutionCards = gsap.utils.toArray(".solution-content");
+    function startViewfinder() {
+      gsap.to(".viewfinder-ui", { opacity: 1, duration: 1, delay: 0.5 });
 
-            solutionCards.forEach((card, index) => {
-              if (index < solutionCards.length - 1) {
-                gsap.to(card, {
-                  scale: 0.9,
-                  opacity: 0.5,
-                  filter: "blur(5px)",
-                  scrollTrigger: {
-                    trigger: card,
-                    start: "top 15%",
-                    end: "bottom 15%",
-                    scrub: true,
-                  },
-                });
-              }
-            });
-          },
+      gsap.from(".vf-stat", {
+        opacity: 0,
+        y: -10,
+        stagger: 0.1,
+        delay: 1,
+        duration: 0.5,
+      });
+
+      gsap.from(".vf-corner", {
+        scale: 1.5,
+        opacity: 0,
+        duration: 1,
+        delay: 0.5,
+        ease: "expo.out",
+      });
+    }
+
+    function animateHeroVisual() {
+      document.addEventListener("mousemove", (e) => {
+        const xPos = e.clientX / window.innerWidth - 0.5;
+        const yPos = e.clientY / window.innerHeight - 0.5;
+
+        gsap.to(".broadcast-card", {
+          rotationY: xPos * 10,
+          rotationX: -yPos * 10,
+          x: xPos * 20,
+          y: yPos * 20,
+          duration: 1,
+          ease: "power2.out",
         });
       });
 
-      function runBroadcastSplash() {
-        const pct = document.querySelector(".loading-pct");
-        const timecode = document.querySelector(".timecode");
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-        let load = 0;
-        const interval = setInterval(() => {
-          load += Math.floor(Math.random() * 10) + 5;
-          if (load > 100) load = 100;
-          pct.textContent = load + "%";
-
-          if (load === 100) {
-            clearInterval(interval);
-            const tl = gsap.timeline();
-
-            tl.to(".broadcast-splash", {
-              duration: 0.2,
-              skewX: 10,
-              scale: 1.1,
-              filter: "brightness(2)",
-              ease: "power4.in",
-            })
-              .to(".broadcast-splash", {
-                opacity: 0,
-                display: "none",
-                duration: 0.3,
-              })
-              .add(animateHeroVisual)
-              .add(startViewfinder);
-          }
-        }, 100);
-
-        let sec = 0,
-          min = 0,
-          hour = 0,
-          frame = 0;
-        setInterval(() => {
-          frame++;
-          if (frame == 60) {
-            frame = 0;
-            sec++;
-          }
-          if (sec == 60) {
-            sec = 0;
-            min++;
-          }
-          const f = (n) => n.toString().padStart(2, "0");
-          // Note: This updates all timecodes on the page, including the new footer one
-          document.querySelectorAll(".timecode").forEach((el) => {
-            el.textContent = `00:${f(min)}:${f(sec)}:${f(frame)}`;
-          });
-        }, 1000 / 60);
-      }
-
-      function startViewfinder() {
-        gsap.to(".viewfinder-ui", { opacity: 1, duration: 1, delay: 0.5 });
-
-        gsap.from(".vf-stat", {
+      tl.from(
+        ".broadcast-card",
+        {
+          y: 100,
+          rotationX: -20,
           opacity: 0,
-          y: -10,
+          duration: 1.5,
+        },
+        "0.5",
+      );
+
+      tl.from(
+        ".accent-bar",
+        {
+          scaleY: 0,
+          duration: 0.6,
+        },
+        "1.2",
+      );
+
+      tl.to(
+        ".lower-third",
+        {
+          opacity: 1,
+          duration: 0.1,
+        },
+        "1.2",
+      );
+
+      tl.to(
+        ".hero-visual",
+        {
+          opacity: 1,
+          duration: 0.1,
+        },
+        "1.2",
+      );
+
+      tl.from(
+        ".info-box div",
+        {
+          x: -20,
+          opacity: 0,
           stagger: 0.1,
-          delay: 1,
+          duration: 0.6,
+        },
+        "1.4",
+      );
+
+      gsap.to(".live-indicator .dot", {
+        opacity: 0.4,
+        duration: 0.8,
+        yoyo: true,
+        repeat: -1,
+      });
+
+      const features = [
+        { title: "Real-Time Data", subtitle: "Connect APIs & Google Sheets" },
+        { title: "No Coding Needed", subtitle: "Drag & Drop WYSIWYG Editor" },
+        {
+          title: "Browser Source Output",
+          subtitle: "Works with Software Mixers",
+        },
+        { title: "Broadcast Ready", subtitle: "HTML5 Rendering Engine" },
+      ];
+
+      let index = 0;
+      const titleEl = document.querySelector(".info-title");
+      const subtitleEl = document.querySelector(".info-subtitle");
+
+      const cycleTl = gsap.timeline({
+        repeat: -1,
+        repeatDelay: 2.5,
+        delay: 3,
+      });
+
+      cycleTl
+        .to(".info-box div", {
+          y: -15,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power2.in",
+        })
+        .call(() => {
+          titleEl.textContent = features[index].title;
+          subtitleEl.textContent = features[index].subtitle;
+          index = (index + 1) % features.length;
+        })
+        .set(".info-box div", { y: 15 })
+        .to(".info-box div", {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        });
+    }
+
+    function startDragAnimation() {
+      const cursor = ".mouse-cursor";
+      const layerItem = ".layer-3"; // Logo Layer
+      const canvasLogo = ".elem-logo";
+
+      // 1. Initial Setup
+      // Set layer zIndex to 0 initially
+      gsap.set(layerItem, { y: 0, zIndex: 0 });
+      // Set canvas logo zIndex to 0 (below the BG which is usually 1)
+      gsap.set(canvasLogo, { x: 0, y: 0, scale: 1, zIndex: 0 });
+      gsap.set(cursor, { x: 0, y: 100, opacity: 0 });
+
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+
+      tl
+        // --- REARRANGE LAYERS ---
+        .to(cursor, { opacity: 1, duration: 0.3 })
+        .to(cursor, { x: 100, y: 300, duration: 1, ease: "power2.out" })
+
+        // Grab Layer
+        .to(cursor, { scale: 0.8, duration: 0.1 })
+        .to(
+          layerItem,
+          {
+            scale: 1.02,
+            backgroundColor: "rgba(255,255,255,0.1)",
+            zIndex: 10,
+            duration: 0.1,
+          },
+          "<",
+        )
+
+        // Drag Up
+        .to([layerItem], { y: -108, duration: 0.8, ease: "power2.inOut" })
+        .to([cursor], { y: 180, duration: 0.8, ease: "power2.inOut" }, "<")
+
+        // 2. SWITCH Z-INDEX HERE
+        // Use .set to snap the zIndex instantly during the drag
+
+        // Shift others
+        .to(
+          ".layer-1",
+          { y: 54, duration: 0.5, ease: "power2.inOut" },
+          "<0.2",
+        )
+        .to(
+          ".layer-2",
+          { y: 54, duration: 0.5, ease: "power2.inOut" },
+          "<0.1",
+        )
+        .set(canvasLogo, { zIndex: 5 }, "<")
+
+        // Release
+        .to(cursor, { scale: 1, duration: 0.1 })
+        .to(
+          layerItem,
+          {
+            scale: 1,
+            backgroundColor: "rgba(255,255,255,0.05)",
+            duration: 0.1,
+          },
+          "<",
+        )
+
+        // --- MOVE TO CANVAS ---
+        .to(cursor, { x: 415, y: 303, duration: 1.2, ease: "power2.inOut" })
+
+        // Grab Logo on Canvas
+        .to(cursor, { scale: 0.8, duration: 0.1 })
+        .to(
+          canvasLogo,
+          { scale: 1.2, boxShadow: "0 0 0 2px #fff", duration: 0.1 },
+          "<",
+        )
+
+        // Drag Logo
+        .to([canvasLogo], { x: 70, y: 10, duration: 1, ease: "power2.out" })
+        .to(
+          [cursor],
+          { x: 480, y: 310, duration: 1, ease: "power2.out" },
+          "<",
+        )
+
+        // Release
+        .to(cursor, { scale: 1, duration: 0.1 })
+        .to(
+          canvasLogo,
+          {
+            scale: 1,
+            boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+            duration: 0.1,
+          },
+          "<",
+        )
+
+        // --- RESET ---
+        .to(cursor, { opacity: 0, duration: 0.3, delay: 0.5 })
+        .to([layerItem, ".layer-1", ".layer-2", canvasLogo], {
+          opacity: 0,
+          duration: 0.5,
+        })
+
+        // 3. Reset Z-Index back to 0 for the next loop
+        .set([layerItem, ".layer-1", ".layer-2"], { x: 0, y: 0 })
+        .set(canvasLogo, { x: 0, y: 0, zIndex: 0 })
+
+        .to([layerItem, ".layer-1", ".layer-2", canvasLogo], {
+          opacity: 1,
           duration: 0.5,
         });
+    }
+    function startDataAnimation() {
+      // 1. Setup Time Ticker (Updates every second)
+      const timeDisplay = document.querySelector(".time-display");
 
-        gsap.from(".vf-corner", {
-          scale: 1.5,
-          opacity: 0,
-          duration: 1,
-          delay: 0.5,
-          ease: "expo.out",
+      // Simple helper to format time
+      const updateTime = () => {
+        const now = new Date();
+        const str = `"${now.getHours()}:${String(now.getMinutes()).padStart(
+          2,
+          "0",
+        )}:${String(now.getSeconds()).padStart(2, "0")}"`;
+        if (timeDisplay) timeDisplay.textContent = str;
+      };
+      setInterval(updateTime, 1000);
+      updateTime();
+
+      // 2. Setup GSAP Animations
+      // A. Polling Line (Visual sweep)
+      const poller = gsap.to(".data-poller", {
+        top: "100%",
+        opacity: 1,
+        duration: 2,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true, // Sweeps up and down
+      });
+
+      // B. Viewer Count Ticker (Constant fluctuation)
+      const viewerObj = { val: 12450 };
+      const viewerEl = document.querySelector(".viewers-count");
+      const viewerRow = document.querySelector(".viewers-row");
+
+      gsap.to(viewerObj, {
+        val: 12550,
+        duration: 5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        onUpdate: () => {
+          // Update text with comma formatting
+          viewerEl.textContent = Math.floor(viewerObj.val).toLocaleString();
+        },
+        onRepeat: () => {
+          // Flash the row green occasionally
+          flashRow(viewerRow);
+        },
+      });
+
+      // C. Score Update (Occasional event)
+      const scoreEl = document.querySelector(".score-val");
+      const scoreRow = document.querySelector(".score-row");
+
+      const scoreTl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
+
+      scoreTl
+        .to({}, { duration: 0.1 }) // Wait
+        .call(() => {
+          // Change score
+          const current = parseInt(scoreEl.textContent);
+          scoreEl.textContent = current + 1;
+          flashRow(scoreRow, "#ef4444"); // Red flash for score change
+        })
+        .to({}, { duration: 0.5 }) // Wait before resetting if needed (loop handles it)
+        .call(() => {
+          // Reset score for loop continuity
+          if (parseInt(scoreEl.textContent) > 5) scoreEl.textContent = "2";
         });
+
+      // Helper: Flash Effect
+      function flashRow(element, color = "rgba(0, 212, 255, 0.15)") {
+        gsap.fromTo(
+          element,
+          { backgroundColor: color },
+          { backgroundColor: "transparent", duration: 0.5 },
+        );
       }
+    }
 
-      function animateHeroVisual() {
-        document.addEventListener("mousemove", (e) => {
-          const xPos = e.clientX / window.innerWidth - 0.5;
-          const yPos = e.clientY / window.innerHeight - 0.5;
+    function startPlayoutAnimation() {
+      const cursor2 = ".mouse-cursor2";
+      const itemToPlay = ".item-2"; // The target item in playlist
+      const takeButton = ".btn-play";
+      const graphic = ".live-graphic";
 
-          gsap.to(".broadcast-card", {
-            rotationY: xPos * 10,
-            rotationX: -yPos * 10,
-            x: xPos * 20,
-            y: yPos * 20,
-            duration: 1,
-            ease: "power2.out",
-          });
-        });
+      // Initial Setup
+      gsap.set(graphic, { x: -50, opacity: 0 }); // Hidden off to left
+      gsap.set(cursor2, { x: "120%", y: "120%", opacity: 0 });
+      // Reset playlist states
+      gsap.set(".playlist-item", {
+        backgroundColor: "rgba(255,255,255,0.03)",
+        borderColor: "transparent",
+      });
+      gsap.set(".status-light", {
+        backgroundColor: "#444",
+        boxShadow: "none",
+      });
 
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 });
 
-        tl.from(
-          ".broadcast-card",
+      tl
+        // 1. Move cursor2 to Playlist Item
+        .to(cursor2, { opacity: 1, duration: 0.3 })
+        .to(cursor2, { x: -550, y: -28, duration: 1, ease: "power2.out" }) // Position over item 2
+
+        // 2. Click to Select
+        .to(cursor2, { scale: 0.8, duration: 0.1 })
+        .to(
+          itemToPlay,
           {
-            y: 100,
-            rotationX: -20,
-            opacity: 0,
-            duration: 1.5,
-          },
-          "0.5",
-        );
-
-        tl.from(
-          ".accent-bar",
-          {
-            scaleY: 0,
-            duration: 0.6,
-          },
-          "1.2",
-        );
-
-        tl.to(
-          ".lower-third",
-          {
-            opacity: 1,
+            backgroundColor: "rgba(157, 78, 221, 0.2)",
+            borderColor: "rgba(157, 78, 221, 0.5)",
             duration: 0.1,
           },
-          "1.2",
-        );
+          "<",
+        )
+        .to(cursor2, { scale: 1, duration: 0.1 })
 
-        tl.to(
-          ".hero-visual",
+        // 3. Move cursor2 to "TAKE" button
+        .to(cursor2, { x: -550, y: 120, duration: 0.8, ease: "power2.inOut" })
+
+        // 4. Click TAKE
+        .to(cursor2, { scale: 0.8, duration: 0.1 })
+        .to(
+          takeButton,
+          { scale: 0.95, filter: "brightness(1.2)", duration: 0.1 },
+          "<",
+        )
+
+        // 5. Trigger Graphic & Update UI Status
+        .to(
+          itemToPlay,
           {
-            opacity: 1,
+            backgroundColor: "rgba(239, 68, 68, 0.2)",
+            borderColor: "rgba(239, 68, 68, 0.5)",
             duration: 0.1,
           },
-          "1.2",
-        );
-
-        tl.from(
-          ".info-box div",
+          "<",
+        )
+        .to(
+          `${itemToPlay} .status-light`,
           {
-            x: -20,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.6,
+            backgroundColor: "#ef4444",
+            boxShadow: "0 0 5px #ef4444",
+            duration: 0.1,
           },
-          "1.4",
+          "<",
+        )
+        .to(
+          graphic,
+          { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+          "<0.1",
+        ) // Graphic slides in
+
+        // 6. Release Button
+        .to(cursor2, { scale: 1, duration: 0.1 }, "<0.1")
+        .to(
+          takeButton,
+          { scale: 1, filter: "brightness(1)", duration: 0.1 },
+          "<",
+        )
+
+        // 7. cursor2 Leaves
+        .to(cursor2, { x: 200, y: 200, opacity: 0, duration: 1 })
+
+        // 8. Graphic stays for a bit... then resets for loop
+        .to(graphic, { opacity: 0, x: -20, duration: 0.5, delay: 2 })
+        .to(
+          [itemToPlay, `${itemToPlay} .status-light`],
+          { clearProps: "all", duration: 0.2 },
+          "<",
         );
+    }
+  </script>
+</body>
 
-        gsap.to(".live-indicator .dot", {
-          opacity: 0.4,
-          duration: 0.8,
-          yoyo: true,
-          repeat: -1,
-        });
-
-        const features = [
-          { title: "Real-Time Data", subtitle: "Connect APIs & Google Sheets" },
-          { title: "No Coding Needed", subtitle: "Drag & Drop WYSIWYG Editor" },
-          {
-            title: "Browser Source Output",
-            subtitle: "Works with Software Mixers",
-          },
-          { title: "Broadcast Ready", subtitle: "HTML5 Rendering Engine" },
-        ];
-
-        let index = 0;
-        const titleEl = document.querySelector(".info-title");
-        const subtitleEl = document.querySelector(".info-subtitle");
-
-        const cycleTl = gsap.timeline({
-          repeat: -1,
-          repeatDelay: 2.5,
-          delay: 3,
-        });
-
-        cycleTl
-          .to(".info-box div", {
-            y: -15,
-            opacity: 0,
-            duration: 0.4,
-            stagger: 0.05,
-            ease: "power2.in",
-          })
-          .call(() => {
-            titleEl.textContent = features[index].title;
-            subtitleEl.textContent = features[index].subtitle;
-            index = (index + 1) % features.length;
-          })
-          .set(".info-box div", { y: 15 })
-          .to(".info-box div", {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            stagger: 0.1,
-            ease: "power2.out",
-          });
-      }
-
-      function startDragAnimation() {
-        const cursor = ".mouse-cursor";
-        const layerItem = ".layer-3"; // Logo Layer
-        const canvasLogo = ".elem-logo";
-
-        // 1. Initial Setup
-        // Set layer zIndex to 0 initially
-        gsap.set(layerItem, { y: 0, zIndex: 0 });
-        // Set canvas logo zIndex to 0 (below the BG which is usually 1)
-        gsap.set(canvasLogo, { x: 0, y: 0, scale: 1, zIndex: 0 });
-        gsap.set(cursor, { x: 0, y: 100, opacity: 0 });
-
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-
-        tl
-          // --- REARRANGE LAYERS ---
-          .to(cursor, { opacity: 1, duration: 0.3 })
-          .to(cursor, { x: 100, y: 300, duration: 1, ease: "power2.out" })
-
-          // Grab Layer
-          .to(cursor, { scale: 0.8, duration: 0.1 })
-          .to(
-            layerItem,
-            {
-              scale: 1.02,
-              backgroundColor: "rgba(255,255,255,0.1)",
-              zIndex: 10,
-              duration: 0.1,
-            },
-            "<",
-          )
-
-          // Drag Up
-          .to([layerItem], { y: -108, duration: 0.8, ease: "power2.inOut" })
-          .to([cursor], { y: 180, duration: 0.8, ease: "power2.inOut" }, "<")
-
-          // 2. SWITCH Z-INDEX HERE
-          // Use .set to snap the zIndex instantly during the drag
-
-          // Shift others
-          .to(
-            ".layer-1",
-            { y: 54, duration: 0.5, ease: "power2.inOut" },
-            "<0.2",
-          )
-          .to(
-            ".layer-2",
-            { y: 54, duration: 0.5, ease: "power2.inOut" },
-            "<0.1",
-          )
-          .set(canvasLogo, { zIndex: 5 }, "<")
-
-          // Release
-          .to(cursor, { scale: 1, duration: 0.1 })
-          .to(
-            layerItem,
-            {
-              scale: 1,
-              backgroundColor: "rgba(255,255,255,0.05)",
-              duration: 0.1,
-            },
-            "<",
-          )
-
-          // --- MOVE TO CANVAS ---
-          .to(cursor, { x: 415, y: 303, duration: 1.2, ease: "power2.inOut" })
-
-          // Grab Logo on Canvas
-          .to(cursor, { scale: 0.8, duration: 0.1 })
-          .to(
-            canvasLogo,
-            { scale: 1.2, boxShadow: "0 0 0 2px #fff", duration: 0.1 },
-            "<",
-          )
-
-          // Drag Logo
-          .to([canvasLogo], { x: 70, y: 10, duration: 1, ease: "power2.out" })
-          .to(
-            [cursor],
-            { x: 480, y: 310, duration: 1, ease: "power2.out" },
-            "<",
-          )
-
-          // Release
-          .to(cursor, { scale: 1, duration: 0.1 })
-          .to(
-            canvasLogo,
-            {
-              scale: 1,
-              boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
-              duration: 0.1,
-            },
-            "<",
-          )
-
-          // --- RESET ---
-          .to(cursor, { opacity: 0, duration: 0.3, delay: 0.5 })
-          .to([layerItem, ".layer-1", ".layer-2", canvasLogo], {
-            opacity: 0,
-            duration: 0.5,
-          })
-
-          // 3. Reset Z-Index back to 0 for the next loop
-          .set([layerItem, ".layer-1", ".layer-2"], { x: 0, y: 0 })
-          .set(canvasLogo, { x: 0, y: 0, zIndex: 0 })
-
-          .to([layerItem, ".layer-1", ".layer-2", canvasLogo], {
-            opacity: 1,
-            duration: 0.5,
-          });
-      }
-      function startDataAnimation() {
-        // 1. Setup Time Ticker (Updates every second)
-        const timeDisplay = document.querySelector(".time-display");
-
-        // Simple helper to format time
-        const updateTime = () => {
-          const now = new Date();
-          const str = `"${now.getHours()}:${String(now.getMinutes()).padStart(
-            2,
-            "0",
-          )}:${String(now.getSeconds()).padStart(2, "0")}"`;
-          if (timeDisplay) timeDisplay.textContent = str;
-        };
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        // 2. Setup GSAP Animations
-        // A. Polling Line (Visual sweep)
-        const poller = gsap.to(".data-poller", {
-          top: "100%",
-          opacity: 1,
-          duration: 2,
-          ease: "power1.inOut",
-          repeat: -1,
-          yoyo: true, // Sweeps up and down
-        });
-
-        // B. Viewer Count Ticker (Constant fluctuation)
-        const viewerObj = { val: 12450 };
-        const viewerEl = document.querySelector(".viewers-count");
-        const viewerRow = document.querySelector(".viewers-row");
-
-        gsap.to(viewerObj, {
-          val: 12550,
-          duration: 5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          onUpdate: () => {
-            // Update text with comma formatting
-            viewerEl.textContent = Math.floor(viewerObj.val).toLocaleString();
-          },
-          onRepeat: () => {
-            // Flash the row green occasionally
-            flashRow(viewerRow);
-          },
-        });
-
-        // C. Score Update (Occasional event)
-        const scoreEl = document.querySelector(".score-val");
-        const scoreRow = document.querySelector(".score-row");
-
-        const scoreTl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
-
-        scoreTl
-          .to({}, { duration: 0.1 }) // Wait
-          .call(() => {
-            // Change score
-            const current = parseInt(scoreEl.textContent);
-            scoreEl.textContent = current + 1;
-            flashRow(scoreRow, "#ef4444"); // Red flash for score change
-          })
-          .to({}, { duration: 0.5 }) // Wait before resetting if needed (loop handles it)
-          .call(() => {
-            // Reset score for loop continuity
-            if (parseInt(scoreEl.textContent) > 5) scoreEl.textContent = "2";
-          });
-
-        // Helper: Flash Effect
-        function flashRow(element, color = "rgba(0, 212, 255, 0.15)") {
-          gsap.fromTo(
-            element,
-            { backgroundColor: color },
-            { backgroundColor: "transparent", duration: 0.5 },
-          );
-        }
-      }
-
-      function startPlayoutAnimation() {
-        const cursor2 = ".mouse-cursor2";
-        const itemToPlay = ".item-2"; // The target item in playlist
-        const takeButton = ".btn-play";
-        const graphic = ".live-graphic";
-
-        // Initial Setup
-        gsap.set(graphic, { x: -50, opacity: 0 }); // Hidden off to left
-        gsap.set(cursor2, { x: "120%", y: "120%", opacity: 0 });
-        // Reset playlist states
-        gsap.set(".playlist-item", {
-          backgroundColor: "rgba(255,255,255,0.03)",
-          borderColor: "transparent",
-        });
-        gsap.set(".status-light", {
-          backgroundColor: "#444",
-          boxShadow: "none",
-        });
-
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 });
-
-        tl
-          // 1. Move cursor2 to Playlist Item
-          .to(cursor2, { opacity: 1, duration: 0.3 })
-          .to(cursor2, { x: -550, y: -28, duration: 1, ease: "power2.out" }) // Position over item 2
-
-          // 2. Click to Select
-          .to(cursor2, { scale: 0.8, duration: 0.1 })
-          .to(
-            itemToPlay,
-            {
-              backgroundColor: "rgba(157, 78, 221, 0.2)",
-              borderColor: "rgba(157, 78, 221, 0.5)",
-              duration: 0.1,
-            },
-            "<",
-          )
-          .to(cursor2, { scale: 1, duration: 0.1 })
-
-          // 3. Move cursor2 to "TAKE" button
-          .to(cursor2, { x: -550, y: 120, duration: 0.8, ease: "power2.inOut" })
-
-          // 4. Click TAKE
-          .to(cursor2, { scale: 0.8, duration: 0.1 })
-          .to(
-            takeButton,
-            { scale: 0.95, filter: "brightness(1.2)", duration: 0.1 },
-            "<",
-          )
-
-          // 5. Trigger Graphic & Update UI Status
-          .to(
-            itemToPlay,
-            {
-              backgroundColor: "rgba(239, 68, 68, 0.2)",
-              borderColor: "rgba(239, 68, 68, 0.5)",
-              duration: 0.1,
-            },
-            "<",
-          )
-          .to(
-            `${itemToPlay} .status-light`,
-            {
-              backgroundColor: "#ef4444",
-              boxShadow: "0 0 5px #ef4444",
-              duration: 0.1,
-            },
-            "<",
-          )
-          .to(
-            graphic,
-            { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-            "<0.1",
-          ) // Graphic slides in
-
-          // 6. Release Button
-          .to(cursor2, { scale: 1, duration: 0.1 }, "<0.1")
-          .to(
-            takeButton,
-            { scale: 1, filter: "brightness(1)", duration: 0.1 },
-            "<",
-          )
-
-          // 7. cursor2 Leaves
-          .to(cursor2, { x: 200, y: 200, opacity: 0, duration: 1 })
-
-          // 8. Graphic stays for a bit... then resets for loop
-          .to(graphic, { opacity: 0, x: -20, duration: 0.5, delay: 2 })
-          .to(
-            [itemToPlay, `${itemToPlay} .status-light`],
-            { clearProps: "all", duration: 0.2 },
-            "<",
-          );
-      }
-    </script>
-  </body>
 </html>
