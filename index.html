@@ -132,6 +132,32 @@
       .hero-visual {
         display: none;
       }
+
+      .hero-visual {
+        display: none;
+      }
+    }
+
+    /* --- BACKGROUND ANIMATION --- */
+    #background-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .blur-circle {
+      position: absolute;
+      background: radial-gradient(circle,
+          rgba(138, 43, 226, 0.4) 0%,
+          rgba(75, 0, 130, 0) 70%);
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.6;
     }
   </style>
 </head>
@@ -165,6 +191,7 @@
 
   <section class="hero" id="home">
     <div class="hero-bg">
+      <div id="background-animation"></div>
       <div class="viewfinder-ui">
         <div class="vf-corner tl"></div>
         <div class="vf-corner tr"></div>
@@ -718,6 +745,7 @@
       startDragAnimation();
       startDataAnimation();
       startPlayoutAnimation();
+      initBackgroundAnimation();
 
       // --- HORIZONTAL SCROLL LOGIC ---
       ScrollTrigger.matchMedia({
@@ -800,29 +828,73 @@
             .add(animateHeroVisual)
             .add(startViewfinder);
         }
-      }, 100);
-
-      let sec = 0,
-        min = 0,
-        hour = 0,
-        frame = 0;
-      setInterval(() => {
-        frame++;
-        if (frame == 60) {
-          frame = 0;
-          sec++;
-        }
-        if (sec == 60) {
-          sec = 0;
-          min++;
-        }
-        const f = (n) => n.toString().padStart(2, "0");
-        // Note: This updates all timecodes on the page, including the new footer one
-        document.querySelectorAll(".timecode").forEach((el) => {
-          el.textContent = `00:${f(min)}:${f(sec)}:${f(frame)}`;
-        });
-      }, 1000 / 60);
+      }, 30);
     }
+
+    function initBackgroundAnimation() {
+      const bgContainer = document.getElementById("background-animation");
+      // Use hero-bg dimensions instead of window to stay contained
+      const containerWidth = bgContainer.offsetWidth;
+      const containerHeight = bgContainer.offsetHeight;
+
+      const colors = [
+        "rgba(138, 43, 226, 0.6)", // Blue Violet
+        "rgba(148, 0, 211, 0.6)", // Dark Violet
+        "rgba(75, 0, 130, 0.6)", // Indigo
+        "rgba(123, 104, 238, 0.6)", // Medium Slate Blue
+        "rgba(218, 112, 214, 0.6)", // Orchid
+      ];
+
+      for (let i = 0; i < 10; i++) { // Reduced count for section
+        const circle = document.createElement("div");
+        circle.classList.add("blur-circle");
+        const size = Math.random() * 200 + 100;
+        circle.style.width = `${size}px`;
+        circle.style.height = `${size}px`;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        circle.style.background = `radial-gradient(circle, ${color} 0%, rgba(75, 0, 130, 0) 70%)`;
+
+        gsap.set(circle, {
+          x: Math.random() * containerWidth,
+          y: Math.random() * containerHeight,
+          scale: Math.random() * 0.5 + 0.5,
+        });
+
+        bgContainer.appendChild(circle);
+
+        gsap.to(circle, {
+          x: `random(0, ${containerWidth})`,
+          y: `random(0, ${containerHeight})`,
+          duration: `random(10, 20)`,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          scale: `random(0.5, 1.2)`,
+        });
+      }
+    }
+
+    let sec = 0,
+      min = 0,
+      hour = 0,
+      frame = 0;
+    setInterval(() => {
+      frame++;
+      if (frame == 60) {
+        frame = 0;
+        sec++;
+      }
+      if (sec == 60) {
+        sec = 0;
+        min++;
+      }
+      const f = (n) => n.toString().padStart(2, "0");
+      // Note: This updates all timecodes on the page, including the new footer one
+      document.querySelectorAll(".timecode").forEach((el) => {
+        el.textContent = `00:${f(min)}:${f(sec)}:${f(frame)}`;
+      });
+    }, 1000 / 60);
+
 
     function startViewfinder() {
       gsap.to(".viewfinder-ui", { opacity: 1, duration: 1, delay: 0.5 });

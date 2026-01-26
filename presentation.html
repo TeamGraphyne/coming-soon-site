@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Graphyne - Viva Presentation</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <style>
@@ -16,7 +22,7 @@
     }
 
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
       overflow: hidden;
       background-color: #1a0b2e;
       color: white;
@@ -32,84 +38,37 @@
       pointer-events: none;
     }
 
-    /* 1. The LIVE Indicator */
-    .live-bug {
+
+
+    .live-indicator {
       position: absolute;
-      top: 50px;
-      right: 50px;
-      background: rgba(220, 20, 60, 0.9);
-      /* Crimson Red */
-      color: white;
-      padding: 6px 16px;
-      border-radius: 4px;
-      font-weight: 800;
-      font-size: 1.1rem;
-      letter-spacing: 2px;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 0 20px rgba(220, 20, 60, 0.4);
-      text-transform: uppercase;
+      gap: 0.5rem;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      vertical-align: middle;
     }
 
-    .rec-dot {
-      width: 12px;
-      height: 12px;
-      background-color: white;
+    .live-indicator .dot {
+      width: 9px;
+      height: 9px;
+      background: #ef4444;
       border-radius: 50%;
-      animation: blink 1.5s infinite ease-in-out;
+      margin-top: 2px;
     }
 
-    @keyframes blink {
 
-      0%,
-      100% {
-        opacity: 1;
-      }
 
-      50% {
-        opacity: 0.3;
-      }
-    }
 
-    /* 2. Corner Guide Lines (Crop Marks) */
-    .corner-guide {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border-color: rgba(255, 255, 255, 0.3);
-      /* Subtle white */
-      border-style: solid;
-      border-width: 0;
-    }
-
-    .tl {
-      top: 30px;
-      left: 30px;
-      border-top-width: 3px;
-      border-left-width: 3px;
-    }
-
-    .tr {
-      top: 30px;
-      right: 30px;
-      border-top-width: 3px;
-      border-right-width: 3px;
-    }
-
-    .bl {
-      bottom: 30px;
-      left: 30px;
-      border-bottom-width: 3px;
-      border-left-width: 3px;
-    }
-
-    .br {
-      bottom: 30px;
-      right: 30px;
-      border-bottom-width: 3px;
-      border-right-width: 3px;
-    }
 
     /* --- EXISTING STYLES --- */
     #background-animation {
@@ -183,54 +142,7 @@
       color: #e0d0ff;
     }
 
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: 1fr auto 1.2fr auto 1fr;
-      width: 90%;
-      max-width: 1400px;
-      margin-top: 3rem;
-      align-items: center;
-      gap: 1rem;
-    }
 
-    .price-card {
-      padding: 2rem;
-      border-radius: 20px;
-      text-align: center;
-    }
-
-    .divider {
-      width: 2px;
-      height: 250px;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .graphyne-card {
-      padding: 3rem 2rem;
-      border-radius: 24px;
-      border: 1px solid rgba(77, 255, 136, 0.3);
-      background: rgba(77, 255, 136, 0.05);
-      animation: pulse-green 4s infinite ease-in-out;
-      transform: scale(1.05);
-      z-index: 10;
-    }
-
-    @keyframes pulse-green {
-      0% {
-        background-color: rgba(77, 255, 136, 0.05);
-        box-shadow: 0 0 0 0 rgba(77, 255, 136, 0);
-      }
-
-      50% {
-        background-color: rgba(77, 255, 136, 0.15);
-        box-shadow: 0 0 40px 0 rgba(77, 255, 136, 0.1);
-      }
-
-      100% {
-        background-color: rgba(77, 255, 136, 0.05);
-        box-shadow: 0 0 0 0 rgba(77, 255, 136, 0);
-      }
-    }
 
     video {
       border-radius: 12px;
@@ -376,135 +288,648 @@
     .highlight-green {
       color: #4dff88;
     }
+
+    /* --- HERO VIEWFINDER UI (Integrated) --- */
+    .viewfinder-ui {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      padding: 2rem;
+      box-sizing: border-box;
+      z-index: 100;
+      opacity: 1;
+    }
+
+    /* Corners */
+    .vf-corner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-color: rgba(255, 255, 255, 0.5);
+      border-style: solid;
+    }
+
+    .tl {
+      top: 2rem;
+      left: 2rem;
+      border-width: 2px 0 0 2px;
+    }
+
+    .tr {
+      top: 2rem;
+      right: 2rem;
+      border-width: 2px 2px 0 0;
+    }
+
+    .bl {
+      bottom: 2rem;
+      left: 2rem;
+      border-width: 0 0 2px 2px;
+    }
+
+    .br {
+      bottom: 2rem;
+      right: 2rem;
+      border-width: 0 2px 2px 0;
+    }
+
+    /* Stats Text */
+    .vf-stat {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: "Courier New", monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .top-left {
+      top: 3.0rem;
+      left: 3.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-right {
+      top: 2.0rem;
+      right: 2.5rem;
+    }
+
+    .bottom-left {
+      bottom: 3.0rem;
+      left: 3.5rem;
+    }
+
+    .bottom-right {
+      bottom: 3.0rem;
+      right: 3.5rem;
+    }
+
+    .bottom-center {
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+    }
+
+
+
+    /* SLIDE 2 SPECIFIC STYLES */
+    .comparison-container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      height: 60vh;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .workflow-half {
+      flex: 1;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .workflow-half h3 {
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .workflow-desc {
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    /* Old Way Visuals */
+    .old-way {
+      border-color: rgba(255, 99, 71, 0.3);
+    }
+
+    .icon-chaos {
+      position: relative;
+      width: 100%;
+      height: 300px;
+    }
+
+    .chaos-icon {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    #icon-ps {
+      top: 20px;
+      left: 40px;
+      background: #001e36;
+      color: #31a8ff;
+      border: 1px solid #31a8ff;
+    }
+
+    #icon-ae {
+      top: 80px;
+      right: 60px;
+      background: #00005b;
+      color: #dcb6fb;
+      border: 1px solid #dcb6fb;
+    }
+
+    #icon-server {
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #444;
+      font-size: 3rem;
+      width: 120px;
+    }
+
+    .chaos-arrow {
+      position: absolute;
+      font-size: 2rem;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* New Way Visuals */
+    .new-way {
+      background: rgba(77, 255, 136, 0.05);
+      border: 1px solid rgba(77, 255, 136, 0.3);
+    }
+
+    .graphyne-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 300px;
+      padding: 0 1rem;
+    }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0.5;
+      /* Starts dimmed */
+    }
+
+    .flow-icon {
+      font-size: 4rem;
+      position: relative;
+    }
+
+    .flow-arrow {
+      font-size: 2rem;
+      color: #4dff88;
+      opacity: 0.3;
+      margin-bottom: 2rem;
+    }
+
+    .flow-label {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ccffda;
+    }
+
+    /* Interactive Elements */
+    .phone-icon {
+      background: #222;
+      border: 2px solid #555;
+      border-radius: 10px;
+      width: 60px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem !important;
+      /* Override emoji size */
+    }
+
+    .phone-btn {
+      width: 40px;
+      height: 30px;
+      background: #333;
+      border-radius: 4px;
+      font-size: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    .monitor-icon {
+      width: 120px;
+      height: 80px;
+      background: #111;
+      border: 2px solid #444;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      /* Lower third position */
+      justify-content: center;
+    }
+
+    .monitor-screen {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .broadcast-graphic {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 5px;
+      transform: translateY(100px);
+      /* Hidden initially */
+    }
+
+    /* Update or Add these specific styles */
+
+    .graphyne-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      /* Changed to evenly for better spacing */
+      width: 100%;
+      height: 300px;
+      padding: 0 0.5rem;
+    }
+
+    /* New Cluster for Step 3 */
+    .control-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .wifi-signal {
+      color: #4dff88;
+      font-weight: bold;
+      letter-spacing: -2px;
+      animation: pulse-wifi 1s infinite;
+      opacity: 0;
+      /* Hidden by default */
+    }
+
+    /* Adjust sizing to fit 3 steps */
+    .phone-icon {
+      width: 50px;
+      /* Slightly smaller */
+      height: 90px;
+      font-size: 1.2rem !important;
+    }
+
+    .monitor-icon {
+      width: 100px;
+      /* Slightly smaller */
+      height: 70px;
+    }
+
+    @keyframes pulse-wifi {
+      0% {
+        opacity: 0.2;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.2;
+      }
+    }
+
+    /* --- SLIDE 3: GAP STYLES --- */
+    .gap-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .gap-card {
+      flex: 1;
+      height: 400px;
+      border-radius: 20px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .trap-card {
+      background: rgba(255, 95, 86, 0.05);
+      border: 1px solid rgba(255, 95, 86, 0.3);
+    }
+
+    .solution-card {
+      background: rgba(77, 255, 136, 0.05);
+      border: 1px solid rgba(77, 255, 136, 0.3);
+      box-shadow: 0 0 30px rgba(77, 255, 136, 0.1);
+    }
+
+    .trap-item {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      width: 80%;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 1px solid rgba(255, 95, 86, 0.2);
+    }
+
+    .trap-icon {
+      font-size: 1.5rem;
+    }
+
+    .trap-text {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffcccc;
+    }
+
+    .trap-divider {
+      margin: 1rem 0;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .gap-lightning {
+      font-size: 4rem;
+      color: #ffd700;
+      text-shadow: 0 0 20px #ffd700;
+      z-index: 10;
+    }
+
+    .solution-icon {
+      font-size: 5rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+
+
+    /* SLIDE 6: THE GRID MOSAIC */
+    .market-content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .grid-wrapper {
+      width: 600px;
+      height: 400px;
+      position: relative;
+      overflow: hidden;
+      /* Hide the overflow during zoom */
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      gap: 4px;
+      width: 100%;
+      height: 100%;
+      transform-origin: center center;
+      /* Zoom from center */
+    }
+
+    .grid-cell {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .legacy-cell {
+      grid-column: 5 / 7;
+      /* Span 2 columns in the center */
+      grid-row: 4 / 6;
+      /* Span 2 rows in the center */
+      background: #ff5f56;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      box-shadow: 0 0 20px rgba(255, 95, 86, 0.6);
+      position: relative;
+    }
+
+    .cell-label {
+      font-size: 0.3rem;
+      /* Starts tiny, looks normal when zoomed in */
+      font-weight: bold;
+      color: white;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .opportunity-cell {
+      background: #4dff88;
+      box-shadow: 0 0 10px rgba(77, 255, 136, 0.4);
+      opacity: 0;
+      /* Hidden initially */
+    }
+
+    .logo-container {
+      width: 300px;
+      /* Adjust to your preferred size */
+      height: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* Ensure no background color is set here */
+    }
+
+    .logo-anim {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /* Keeps aspect ratio intact */
+
+      /* These ensure no ghostly borders appear */
+      display: block;
+      background: transparent;
+    }
   </style>
 </head>
 
 <body>
-  <div id="broadcast-overlay">
-    <div class="live-bug">
-      <div class="rec-dot"></div>
-      <span>LIVE</span>
-    </div>
+  <div id="broadcast-overlay" class="viewfinder-ui">
+    <div class="vf-corner tl"></div>
+    <div class="vf-corner tr"></div>
+    <div class="vf-corner bl"></div>
+    <div class="vf-corner br"></div>
 
-    <div class="corner-guide tl"></div>
-    <div class="corner-guide tr"></div>
-    <div class="corner-guide bl"></div>
-    <div class="corner-guide br"></div>
+    <div class="vf-stat top-left">
+      <span class="timecode">00:00:00:00</span>
+    </div>
+    <div class="vf-stat top-right">
+      <div class="live-indicator"><span class="dot"></span> LIVE</div>
+    </div>
+    <div class="vf-stat bottom-left">ISO 800</div>
+    <div class="vf-stat bottom-center safe-area-marker">+</div>
+    <div class="vf-stat bottom-right">SHUTTER 1/60</div>
+    <div class="vf-stat bottom-center safe-area-marker">+</div>
   </div>
 
   <div id="background-animation"></div>
 
   <div id="presentation-container">
-    <div class="slide active" id="slide-1">
+    <div class="slide" id="slide-1">
       <p>Welcome to</p>
+      <div class="logo-container">
+        <video autoplay muted playsinline class="logo-anim">
+          <source src="assets/GraphyneLogo.webm" type="video/webm">
+        </video>
+
+      </div>
       <h1>Graphyne</h1>
-      <h2>Graphics Creator & Playout Engine</h2>
+      <h2>The Graphics Engine of the Future</h2>
+
     </div>
 
-    <div class="slide" id="slide-2">
-      <h2>The Current Landscape</h2>
-      <video muted playsinline loop style="width: 900px; object-fit: contain;">
-        <source src="./assets/Demo2.mp4" type="video/mp4" />
-      </video>
-      <p style="margin-top: 2rem">
-        You either need a $15k budget, or a CS Degree
-      </p>
+    <div class="slide active" id="slide-2">
+      <h2>The Workflow Revolution</h2>
+
+      <div class="comparison-container">
+        <div class="workflow-half old-way">
+          <h3>The Legacy Way</h3>
+          <!-- <div class="icon-chaos">
+            <div class="chaos-icon" id="icon-ps">Ps</div>
+            <div class="chaos-icon" id="icon-ae">Ae</div>
+            <div class="chaos-icon" id="icon-server">🖧</div>
+            <div class="chaos-arrow">➔</div>
+            <div class="chaos-arrow">?</div>
+          </div> -->
+          <img src="assets/Workflow.png" style="width: 100%; height: 100%; object-fit: contain; margin-bottom: 2rem;">
+          <p class="workflow-desc">Expensive Hardware. Flattened Files. Stress.</p>
+        </div>
+
+        <div class="workflow-half new-way">
+          <h3 style="color: #4dff88;">The Graphyne Way</h3>
+
+          <div class="graphyne-flow">
+            <div class="flow-step" id="step-create">
+              <div class="flow-icon">🎨</div>
+              <div class="flow-label">1. Create</div>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-step" id="step-connect">
+              <div class="flow-icon">🔗</div>
+              <div class="flow-label">2. Connect</div>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-step" id="step-control">
+              <div class="control-cluster">
+                <div class="phone-icon">
+                </div>
+                <div class="wifi-signal">)))</div>
+                <div class="monitor-icon">
+                  <div class="monitor-screen">
+                    <div class="broadcast-graphic">GOAL!</div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow-label">3. Control</div>
+            </div>
+          </div>
+
+          <p class="workflow-desc" style="color: #ccffda;">Design. Connect. Air.</p>
+        </div>
+      </div>
     </div>
 
     <div class="slide" id="slide-3">
-      <h1>The Innovation Gap</h1>
-      <div class="pricing-grid">
-        <div class="price-card">
-          <h2 style="color: #ff4d4d; font-size: 2.5rem; margin-bottom: 0.5rem">
-            Enterprise
-          </h2>
-          <p style="font-size: 1.2rem; color: #aaa">Ross XPression, VizRT</p>
-          <p style="font-size: 3rem; font-weight: bold; margin-top: 20px">
-            $11,000+
-          </p>
-          <p style="font-size: 1.5rem; color: #ff4d4d; margin-top: 10px">
-            (Hardware Dongle Required)
-          </p>
+      <h2>The Innovation Gap</h2>
+      <p style="margin-bottom: 2rem; color: #ffffff;">Existing tools force you to compromise.</p>
+
+      <div class="gap-container">
+        <div class="gap-card trap-card">
+          <h2 style="color: #ff5f56; font-size: 2rem; margin-bottom: 1.5rem;">The Trap</h2>
+
+          <div class="trap-item">
+            <span class="trap-icon">&lt;/&gt;</span>
+            <span class="trap-text">Requires Coding</span>
+          </div>
+
+          <div class="trap-divider">OR</div>
+
+          <div class="trap-item">
+            <span class="trap-icon">📑</span>
+            <span class="trap-text">Rigid Templates</span>
+          </div>
         </div>
-        <div class="divider"></div>
-        <div class="price-card graphyne-card">
-          <h2 style="color: #4dff88; font-size: 3rem; margin-bottom: 0.5rem">
-            Graphyne
-          </h2>
-          <p style="font-size: 1.2rem; color: #ccffda">Browser-Based SaaS</p>
-          <p style="
-                font-size: 4rem;
-                font-weight: bold;
-                margin-top: 20px;
-                color: white;
-              ">
-            $50<span style="font-size: 1.5rem; color: #aaa">/mo</span>
-          </p>
-          <p style="font-size: 1.8rem; color: #4dff88; margin-top: 10px">
-            (Runs on a Potato)
-          </p>
-        </div>
-        <div class="divider"></div>
-        <div class="price-card">
-          <h2 style="color: #ff4d4d; font-size: 2.5rem; margin-bottom: 0.5rem">
-            FOSS
-          </h2>
-          <p style="font-size: 1.2rem; color: #aaa">CasparCG, NodeCG</p>
-          <p style="font-size: 3rem; font-weight: bold; margin-top: 20px">
-            $0
-          </p>
-          <p style="font-size: 1.5rem; color: #ff4d4d; margin-top: 10px">
-            (Configuration Hell)
-          </p>
+
+        <div class="gap-lightning">⚡</div>
+
+        <div class="gap-card solution-card">
+          <h2 style="color: #4dff88; font-size: 2.5rem; margin-bottom: 1.5rem;">The Graphyne Way</h2>
+
+          <div class="solution-content">
+            <span class="solution-icon">🎨</span>
+            <strong style="font-size: 1.8rem; display: block; margin: 1rem 0;">WYSIWYG Creator</strong>
+            <p style="font-size: 1.2rem; color: #ccffda;">"If you can use Canva, you can use Graphyne."</p>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="slide" id="slide-4">
-      <h1>Meet Graphyne</h1>
-      <h2 class="gradient-text" style="margin-bottom: 0;">The "Canva" for Live Graphics</h2>
-
-      <div class="browser-mockup">
-        <div class="browser-header">
-          <div class="window-dot dot-red"></div>
-          <div class="window-dot dot-yellow"></div>
-          <div class="window-dot dot-green"></div>
-        </div>
-        <div class="browser-content">
-          <video muted playsinline loop style="width: 100%; height: 100%; object-fit: contain;">
-            <source src="./assets/GraphDemo.mp4" type="video/mp4" />
-          </video>
-        </div>
-      </div>
-
-      <div class="feature-cards-container">
-        <div class="feature-card">
-          <span style="font-size: 1.5rem;">🎨</span>
-          <div>
-            <strong style="display: block; font-size: 1.1rem;">WYSIWYG Editor</strong>
-            <span style="font-size: 0.9rem; opacity: 0.7;">Drag & Drop Design</span>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <span style="font-size: 1.5rem;">⏱️</span>
-          <div>
-            <strong style="display: block; font-size: 1.1rem;">Real-Time Playout</strong>
-            <span style="font-size: 0.9rem; opacity: 0.7;">Instant Rendering</span>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <span style="font-size: 1.5rem;">🚀</span>
-          <div>
-            <strong style="display: block; font-size: 1.1rem;">Data Integration</strong>
-            <span style="font-size: 0.9rem; opacity: 0.7;">Instant Data Updates</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="slide" id="slide-5">
       <h1 style="font-size: 3rem; margin-bottom: 0;">Built on Web Technologies</h1>
       <p>Just like this presentation!</p>
 
@@ -534,51 +959,130 @@
     </div>
   </div>
 
-  <div class="slide" id="slide-6">
-    <h1>The Business Case</h1>
-    <h2>SaaS: Software as a Service</h2>
-    <div style="
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 3rem;
-            text-align: left;
-          ">
-      <div>
-        <h3 style="color: #d4b3ff; font-size: 2rem">1. Freemium</h3>
-        <p style="font-size: 1.5rem; opacity: 0.7">
-          Watermarked output. Hook the users early.
-        </p>
+  <div class="slide" id="slide-5">
+    <h2 style="font-size: 4rem; margin-bottom: 0;">THIS IS GRAPHYNE</h2>
+    <h2 class="gradient-text" style="margin-bottom: 0;">The "Canva" for Live Graphics</h2>
+
+    <div class="browser-mockup">
+      <div class="browser-header">
+        <div class="window-dot dot-red"></div>
+        <div class="window-dot dot-yellow"></div>
+        <div class="window-dot dot-green"></div>
       </div>
-      <div>
-        <h3 style="color: #d4b3ff; font-size: 2rem">2. Paid</h3>
-        <p style="font-size: 1.5rem; opacity: 0.7">
-          One Time Purchase. No Watermark.
-        </p>
+      <div class="browser-content">
+        <video muted playsinline loop style="width: 100%; height: 100%; object-fit: contain;">
+          <source src="./assets/GraphDemo.mp4" type="video/mp4" />
+        </video>
       </div>
-      <div>
-        <h3 style="color: #d4b3ff; font-size: 2rem">3. Custom Pricing</h3>
-        <p style="font-size: 1.5rem; opacity: 0.7">
-          Custom Pricing for custom features
-        </p>
+    </div>
+
+    <div class="feature-cards-container">
+      <div class="feature-card">
+        <span style="font-size: 1.5rem;">🎨</span>
+        <div>
+          <strong style="display: block; font-size: 1.1rem;">WYSIWYG Editor</strong>
+          <span style="font-size: 0.9rem; opacity: 0.7;">Drag & Drop Design</span>
+        </div>
       </div>
-      <div>
-        <h3 style="color: #d4b3ff; font-size: 2rem">Alt: Open Source</h3>
-        <p style="font-size: 1.5rem; opacity: 0.7">
-          Community Based Approach
-        </p>
+
+      <div class="feature-card">
+        <span style="font-size: 1.5rem;">⏱️</span>
+        <div>
+          <strong style="display: block; font-size: 1.1rem;">Real-Time Playout</strong>
+          <span style="font-size: 0.9rem; opacity: 0.7;">Instant Rendering</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <span style="font-size: 1.5rem;">🚀</span>
+        <div>
+          <strong style="display: block; font-size: 1.1rem;">Data Integration</strong>
+          <span style="font-size: 0.9rem; opacity: 0.7;">Instant Data Updates</span>
+        </div>
       </div>
     </div>
   </div>
 
+  <div class="slide" id="slide-6">
+    <div class="market-content">
+      <h2>THE MARKET SCALE</h2>
+
+      <div class="grid-wrapper">
+        <div class="market-grid" id="market-grid">
+          <div class="grid-cell legacy-cell">
+            <span class="cell-label">The High End<br>(1%)</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="market-slogan" style="margin-top: 2rem; color: #4dff88; font-size: 2.5rem;">
+        We don't fight for the 1%.<br>We unlock the 99%.
+      </h2>
+    </div>
+  </div>
+
   <div class="slide" id="slide-7">
-    <p style="font-size: 1.5rem; opacity: 0.7">Built for Broadcasters, by Broadcasters.</p>
+    <div class="logo-container">
+      <video autoplay muted playsinline class="logo-anim">
+        <source src="assets/GraphyneLogo.webm" type="video/webm">
+      </video>
+
+    </div>
     <br>
-    <h1 style="font-size: 3rem; margin-bottom: 0;">Trust us with your Graphics</h1>
+    <h2 style="font-size: 3rem; margin-bottom: 0; margin-top: 4rem;">Broadcast Graphics<br>Reimagined</h2>
   </div>
 
 
   <script>
+
+    // Populate the Market Grid on Load
+    const gridContainer = document.getElementById('market-grid');
+    // Create 80 cells (10x8 grid approx)
+    for (let i = 0; i < 80; i++) {
+      // Skip the center area where the Legacy Cell is (Indices approx 34,35, 44,45)
+      // Simple check to just add cells, CSS Grid auto-placement handles the rest around the fixed legacy-cell
+      const cell = document.createElement('div');
+      cell.classList.add('grid-cell', 'opportunity-cell');
+      gridContainer.appendChild(cell);
+    }
+    function animateSlide6() {
+      const tl = gsap.timeline();
+
+      // 1. Initial State: Zoomed IN drastically on the Legacy Cell
+      // We scale up the grid so the red box fills most of the wrapper
+      gsap.set(".market-grid", { scale: 3 });
+      gsap.set(".opportunity-cell", { opacity: 0, scale: 0 });
+
+      // 2. The Zoom Out (The Reveal)
+      tl.to(".market-grid", {
+        scale: 1,
+        duration: 2,
+        ease: "power4.inOut"
+      });
+
+      // 3. Shrink the text as we zoom out so it fits the box
+      tl.to(".cell-label", {
+        fontSize: "0.8rem",
+        duration: 2,
+        ease: "power4.inOut"
+      }, "<");
+
+      // 4. Reveal the Opportunity (The Green Grid)
+      // Ripple effect outwards
+      tl.to(".opportunity-cell", {
+        opacity: 0.8,
+        scale: 1,
+        duration: 0.5,
+        stagger: {
+          grid: [8, 10],
+          from: "center",
+          amount: 1
+        }
+      }, "-=1.0"); // Start overlapping with the zoom
+
+      // 5. Show Slogan
+      tl.to("#market-slogan", { opacity: 1, y: 0, duration: 1 });
+    }
     // Background Animation Setup
     const bgContainer = document.getElementById("background-animation");
     const colors = [
@@ -642,6 +1146,38 @@
       }
     }
 
+    // Animation for Slide 3 (The Gap)
+    function animateSlide3() {
+      const tl = gsap.timeline();
+
+      // Animate Trap
+      tl.to(".trap-item", { x: 0, opacity: 1, duration: 0.5, stagger: 0.2 });
+
+      // Animate Lightning Strike
+      tl.to(".gap-lightning", { scale: 1.5, opacity: 1, duration: 0.1, ease: "elastic.out(1, 0.3)" });
+      tl.to(".gap-lightning", { rotation: 10, duration: 0.1, yoyo: true, repeat: 3 });
+
+      // Animate Solution
+      tl.to(".solution-card", { x: 0, opacity: 1, duration: 0.6, ease: "back.out(1.2)" });
+    }
+
+    // Helper: Reset Slide 6 to its pre-animation state (Zoomed In)
+    function resetSlide6State() {
+      // 1. Kill any active animations on these elements so they don't fight us
+      gsap.killTweensOf(".market-grid, .opportunity-cell, .cell-label, #market-slogan");
+
+      // 2. Set the "Starting Block" positions
+      // We want the grid to be massive (Zoomed IN on the legacy cell)
+      gsap.set(".market-grid", { scale: 3 });
+
+      // 3. Hide the green opportunity cells and the slogan
+      gsap.set(".opportunity-cell", { opacity: 0, scale: 0 });
+
+      // 4. Ensure the text is large (since we are zoomed in)
+      gsap.set(".cell-label", { fontSize: "0.8rem" });
+    }
+
+    // Function to change slides
     // Function to change slides
     function goToSlide(newIndex) {
       if (
@@ -670,15 +1206,20 @@
 
       const direction = newIndex > currentSlideIndex ? 1 : -1;
 
+      // 1. DEFINE 'tl' FIRST
       const tl = gsap.timeline({
         onComplete: () => {
           currentSlideIndex = newIndex;
           isAnimating = false;
           gsap.set(currentSlide, { autoAlpha: 0 });
+
+          // Trigger Slide-Specific Animations
+          if (newIndex === 2) animateSlide3(); // Gap
+          if (newIndex === 5) animateSlide6(); // Market
         },
       });
 
-      // OUT Animation
+      // 2. OUT Animation (Old Slide leaves)
       tl.to(
         currentSlide,
         {
@@ -703,7 +1244,15 @@
         "start"
       );
 
-      // PREP Animation
+      // 3. PREP Animation (Set up New Slide)
+
+      // --- RESET LOGIC GOES HERE ---
+      // We do this BEFORE the next slide fades in
+      if (typeof resetSlide6State === "function" && newIndex === 5) {
+        resetSlide6State();
+      }
+      // -----------------------------
+
       tl.set(
         nextSlide,
         {
@@ -724,7 +1273,7 @@
         "start"
       );
 
-      // IN Animation
+      // 4. IN Animation (New Slide Enters)
       tl.to(
         nextSlide,
         {
