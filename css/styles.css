@@ -352,7 +352,7 @@ body.light-mode .problem {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(164, 92, 246, 0.1), transparent 40%);
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(164, 92, 246, 0.1), transparent 40%);
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -660,6 +660,18 @@ body.light-mode .problem-card {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 30px;
 }
 
 .solution-demo {
@@ -1303,7 +1315,7 @@ body.light-mode .team {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(164, 92, 246, 0.1), transparent 40%);
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(164, 92, 246, 0.1), transparent 40%);
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
