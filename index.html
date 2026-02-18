@@ -5,10 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GraphyneLive</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="assets/favi.jpg" type="image/jpg" sizes="32x32" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
     /* --- HORIZONTAL SCROLL (Problem Section) --- */
@@ -225,7 +228,7 @@
 
     <div class="hero-content">
       <h1>
-        <span class="word">The Graphics Engine of the Future</span>
+        <span class="word">The  Graphics  Engine  of  the  Future</span>
       </h1>
       <p>
         The all-in-one web platform for building, managing, and playing out
@@ -741,6 +744,31 @@
       );
       animateElements.forEach((el) => observer.observe(el));
 
+      // Split hero h1 text into characters for animation
+      const heroH1 = document.querySelector('.hero h1 .word');
+      if (heroH1) {
+        const text = heroH1.textContent;
+        heroH1.innerHTML = '';
+        text.split('').forEach((char, i) => {
+          const span = document.createElement('span');
+          span.textContent = char; // Keep regular spaces for natural wrapping
+          span.style.display = 'inline-block';
+          span.style.opacity = '0';
+          span.style.transform = 'translateY(100%)';
+          heroH1.appendChild(span);
+        });
+
+        // Animate characters with GSAP
+        gsap.to('.hero h1 .word span', {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.02,
+          ease: 'expo.out',
+          delay: 1.2
+        });
+      }
+
       runBroadcastSplash();
       startDragAnimation();
       startDataAnimation();
@@ -754,6 +782,7 @@
           const problemTrack = document.querySelector(".problem-grid");
 
           if (problemSection && problemTrack) {
+            const cards = problemTrack.querySelectorAll(".problem-card");
             const getScrollAmount = () => {
               return -(problemTrack.scrollWidth - 1200);
             };
@@ -767,7 +796,8 @@
                 end: () =>
                   `+=${problemTrack.scrollWidth - window.innerWidth}`,
                 pin: true,
-                scrub: 1,
+                scrub: 1.5,
+                snap: cards.length > 1 ? Array.from({length: cards.length}, (_, i) => i / (cards.length - 1)) : 0,
                 invalidateOnRefresh: true,
               },
             });
@@ -782,10 +812,26 @@
 
           solutionCards.forEach((card, index) => {
             if (index < solutionCards.length - 1) {
+              // Add overlay element if it doesn't exist
+              let overlay = card.querySelector('.card-overlay');
+              if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'card-overlay';
+                card.appendChild(overlay);
+              }
+
               gsap.to(card, {
-                scale: 0.9,
-                opacity: 0.5,
-                filter: "blur(5px)",
+                scale: 0.95,
+                scrollTrigger: {
+                  trigger: card,
+                  start: "top 15%",
+                  end: "bottom 15%",
+                  scrub: true,
+                },
+              });
+
+              gsap.to(overlay, {
+                opacity: 0.6,
                 scrollTrigger: {
                   trigger: card,
                   start: "top 15%",
@@ -796,6 +842,18 @@
             }
           });
         },
+      });
+
+      // --- SPOTLIGHT EFFECT ON CARDS ---
+      const spotlightCards = document.querySelectorAll('.problem-card, .team-card');
+      spotlightCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          card.style.setProperty('--mouse-x', `${x}%`);
+          card.style.setProperty('--mouse-y', `${y}%`);
+        });
       });
     });
 
@@ -917,18 +975,20 @@
     }
 
     function animateHeroVisual() {
+      // Use quickTo for zero-latency mouse tracking
+      const quickX = gsap.quickTo(".broadcast-card", "x", {duration: 0.6, ease: "power2.out"});
+      const quickY = gsap.quickTo(".broadcast-card", "y", {duration: 0.6, ease: "power2.out"});
+      const quickRotationX = gsap.quickTo(".broadcast-card", "rotationX", {duration: 0.6, ease: "power2.out"});
+      const quickRotationY = gsap.quickTo(".broadcast-card", "rotationY", {duration: 0.6, ease: "power2.out"});
+
       document.addEventListener("mousemove", (e) => {
         const xPos = e.clientX / window.innerWidth - 0.5;
         const yPos = e.clientY / window.innerHeight - 0.5;
 
-        gsap.to(".broadcast-card", {
-          rotationY: xPos * 10,
-          rotationX: -yPos * 10,
-          x: xPos * 20,
-          y: yPos * 20,
-          duration: 1,
-          ease: "power2.out",
-        });
+        quickX(xPos * 20);
+        quickY(yPos * 20);
+        quickRotationY(xPos * 10);
+        quickRotationX(-yPos * 10);
       });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });

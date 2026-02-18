@@ -10,17 +10,19 @@
   --amethyst: #9d4edd;
   --sunset: #ffc880;
   --princeton-orange: #ff9100;
-  --bg-primary: #000;
-  --bg-secondary: #1a1a1a;
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
   --text-primary: #fff;
   --text-secondary: rgba(255, 255, 255, 0.7);
-  --card-bg: rgba(255, 255, 255, 0.05);
-  --border-color: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --border-color: rgba(255, 255, 255, 0.05);
+  --glow-purple: radial-gradient(circle, rgba(164, 92, 246, 0.15) 0%, transparent 70%);
+  --glow-orange: radial-gradient(circle, rgba(255, 145, 0, 0.15) 0%, transparent 70%);
 }
 
 body {
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
     Cantarell, sans-serif;
   overflow-x: hidden;
   background: var(--bg-primary);
@@ -28,6 +30,11 @@ body {
   transition:
     background 0.3s,
     color 0.3s;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 /* Navigation */
@@ -146,34 +153,21 @@ nav.scrolled {
   font-size: clamp(3rem, 8vw, 7rem);
   font-weight: 900;
   line-height: 1.1;
+  letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
-  /* Removed gradient from here to fix the visibility issue */
   display: inline-block;
 }
 
 .hero h1 .word {
   display: inline-block;
-
-  /* 2. MOVED Gradient styles here so they apply to the inline-blocks */
   background: linear-gradient(90deg, #a45cf6, #ec4899);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-
-  /* 3. Animation Settings */
-  opacity: 0; /* Start hidden so they can fade in */
-  animation: wordFadeIn 0.8s ease-out forwards;
 }
 
-@keyframes wordFadeIn {
-  from {
-    opacity: 0; /* 4. Changed from 1 to 0 to create fade effect */
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hero h1 .word span {
+  display: inline-block;
 }
 
 .hero p {
@@ -334,14 +328,30 @@ body.light-mode .problem {
 }
 
 .problem-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
   padding: 3rem;
   padding-bottom: 1.5rem;
   border-radius: 20px;
-  border: 1px solid rgba(157, 78, 221, 0.3);
-  transition: all 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   transform: translateY(30px);
+  position: relative;
+  overflow: hidden;
+}
+
+.problem-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(164, 92, 246, 0.1), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
 }
 
 body.light-mode .problem-card {
@@ -372,8 +382,14 @@ body.light-mode .problem-card {
 
 .problem-card:hover {
   transform: translateY(-10px);
-  border-color: var(--amethyst);
-  box-shadow: 0 20px 40px rgba(157, 78, 221, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 20px 40px rgba(164, 92, 246, 0.15);
+}
+
+.problem-card:hover::before {
+  opacity: 1;
 }
 
 .problem-icon {
@@ -610,9 +626,10 @@ body.light-mode .problem-card {
   z-index: 1;
   padding: 4rem 2rem;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(157, 78, 221, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
   height: 90vh;
 }
 
@@ -639,6 +656,18 @@ body.light-mode .problem-card {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 30px;
 }
 
 .solution-demo {
@@ -1261,15 +1290,31 @@ body.light-mode .team {
 .team-card {
   flex: 1 1 300px; /* Grow, shrink, base width */
   max-width: 350px;
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
   padding: 1.5rem;
   border-radius: 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
   text-align: center;
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   opacity: 1; /* Hidden for animation */
   transform: translateY(30px);
+  position: relative;
+  overflow: hidden;
+}
+
+.team-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(164, 92, 246, 0.1), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
 }
 
 /* Animation Setup matching your JS */
@@ -1296,8 +1341,14 @@ body.light-mode .team {
 
 .team-card:hover {
   transform: translateY(-10px);
-  border-color: var(--amethyst);
-  box-shadow: 0 15px 40px rgba(157, 78, 221, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 15px 40px rgba(164, 92, 246, 0.15);
+}
+
+.team-card:hover::before {
+  opacity: 1;
 }
 
 .member-img {
@@ -1921,7 +1972,7 @@ body.light-mode .chat-message.bot {
 .vf-stat {
   position: absolute;
   color: rgba(255, 255, 255, 0.6);
-  font-family: "Courier New", monospace;
+  font-family: 'JetBrains Mono', "Courier New", monospace;
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 1px;
@@ -2087,12 +2138,16 @@ body.light-mode .chat-message.bot {
 
 /* Main Window Container */
 .creator-window {
-  width: 500px;
-  height: 300px;
-  background: #1a1a1a;
+  width: 100%;
+  max-width: 32rem;
+  aspect-ratio: 16 / 9;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 40px 80px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   overflow: hidden;
