@@ -168,10 +168,6 @@ nav.scrolled {
 
 .hero h1 .word span {
   display: inline-block;
-  background: linear-gradient(90deg, #a45cf6, #ec4899);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .hero p {
