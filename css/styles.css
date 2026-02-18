@@ -167,6 +167,8 @@ nav.scrolled {
 }
 
 .hero h1 .word span {
+  /* Keep inline-block for GSAP transform animations, but no gradient here
+     so spaces between characters remain visible. Gradient is on parent .word */
   display: inline-block;
 }
 
